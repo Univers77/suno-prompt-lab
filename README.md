@@ -1,23 +1,24 @@
-# SONIC ARCHITECT v7.0 — Mentor Edition (10K Neural Credits)
+# SONIC ARCHITECT v8.0 — Mega App de Inteligencia Musical (70 Credits Optimization)
 
 **Sonic Architect** es la evolución profesional de *Suno Prompt Lab*. Esta plataforma está diseñada para transformar visiones artísticas en realidades sonoras de alta fidelidad utilizando el motor de **Suno AI**.
 
 ## 🚀 Características Principales
 
-- **Neural Studio Copilot (Mentor v1)**: Sistema de traducción de prompts con lógica de consumo de 10,000 créditos neurales.
-- **Workflow Multi-IA**: Guía integrada para optimizar creaciones usando IAs externas (ChatGPT/Claude) antes de inyectar en Suno.
-- **Sonic Academy (17 Módulos)**: Masterclasses profesionales sobre ingeniería de prompts, mezcla IA y estrategias de hits virales.
-- **Missions & XP**: Sistema de gamificación para aprender a dominar el motor neural de forma progresiva.
-- **Max Precision Injections**: Inyectores de metadatos de alto nivel para forzar fidelidad de estudio profesional.
+- **Comparativa Visual (Input vs Output)**: Ve lado a lado cómo la IA transforma tu idea en una arquitectura sonora profesional.
+- **Inyectores de Estilo Quirúrgicos**: 6 botones de control para aplicar estilos específicos (Fidelidad, Voces, Bajos, Reverb, Dinámicas, Estéreo).
+- **Generador de Prompts Inteligente**: Traduce visiones artísticas en parámetros técnicos optimizados para Suno.
+- **Sonic Academy (17 Módulos)**: Masterclasses profesionales indexadas para dominar cada aspecto del motor neural.
+- **Max Precision Injectors**: Inyectores de metadatos de alto nivel con costos de créditos específicos.
 
 ## 🎓 Módulos de Aprendizaje
 
-La plataforma incluye 17 masterclasses sobre:
-- Estructura real de prompts y flujo de trabajo profesional.
-- Ingeniería de estilo avanzado y diseño de instrumentos.
-- Consistencia vocal neural y arquitectura de letras.
-- Mezcla, masterización y síntesis neural profunda.
-- Estrategias de hits virales e integración de workflow profesional.
+**SONIC ARCHITECT es tu brazo extra de Suno AI**. No solo genera prompts, sino que:
+
+- Demuestra la diferencia entre un input básico y un output optimizado.
+- Proporciona inyectores de estilo para control quirúrgico sobre cada aspecto sonoro.
+- Gestiona 70 créditos de optimización para variaciones estratégicas.
+- Ofrece 17 masterclasses profesionales para dominar la ingeniería de prompts.
+- Actúa como copiloto experto en la creación de canciones de nivel comercial.
 
 ## 🌐 Live Preview
 
