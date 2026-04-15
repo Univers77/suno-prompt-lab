@@ -3,712 +3,586 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>SUNO Guía Maestra — by GGLabs</title>
+    <title>SUNO Guía Maestra — Cyber-Expert Edition</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
     <style>
         :root {
-            --bg-space: #05050e;
-            --violet-electric: #7a47f3;
-            --lavender: #c4adff;
-            --cyan-electric: #06b6d4;
-            --magenta: #e879f9;
-            --white: #f8f8ff;
+            /* DARK MODE (Cyberpunk) */
+            --bg: #05050e;
             --surface: rgba(255, 255, 255, 0.03);
-            --surface-hover: rgba(255, 255, 255, 0.07);
+            --surface-solid: #0d0d1c;
             --border: rgba(122, 71, 243, 0.2);
-            --border-hover: rgba(122, 71, 243, 0.5);
-            --font-main: 'Manrope', sans-serif;
-            --font-mono: 'Space Mono', monospace;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --accent: #7a47f3;
+            --accent-alt: #06b6d4;
+            --text: #f8f8ff;
+            --text-dim: rgba(248, 248, 255, 0.6);
+            --glow: rgba(122, 71, 243, 0.3);
+            --font-main: 'Space Grotesk', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+        [data-theme="light"] {
+            --bg: #f4f4f9;
+            --surface: rgba(0, 0, 0, 0.03);
+            --surface-solid: #ffffff;
+            --border: rgba(122, 71, 243, 0.1);
+            --accent: #6366f1;
+            --accent-alt: #0891b2;
+            --text: #1e1e2e;
+            --text-dim: rgba(30, 30, 46, 0.6);
+            --glow: rgba(99, 102, 241, 0.1);
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: var(--font-main);
-            background-color: var(--bg-space);
-            color: var(--white);
-            min-height: 100vh;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background-color 0.5s ease, color 0.5s ease;
             overflow-x: hidden;
-            line-height: 1.6;
+            min-height: 100vh;
         }
 
-        /* --- BACKGROUND ANIMATION --- */
-        #canvas-bg {
+        /* --- CANVAS BACKGROUND --- */
+        #cyber-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.6;
+            opacity: 0.4;
         }
 
-        .glow-orb {
+        /* --- NAVIGATION --- */
+        .nav-top {
             position: fixed;
-            width: 40vw;
-            height: 40vw;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(122, 71, 243, 0.1) 0%, transparent 70%);
-            filter: blur(80px);
-            z-index: -1;
-            animation: float-orb 20s infinite alternate ease-in-out;
-        }
-
-        @keyframes float-orb {
-            0% { transform: translate(-10%, -10%); }
-            100% { transform: translate(20%, 20%); }
-        }
-
-        /* --- LAYOUT --- */
-        .app-container {
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
             display: flex;
-            max-width: 1400px;
-            margin: 0 auto;
-            min-height: 100vh;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: -0.03em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--accent);
+            font-family: var(--font-mono);
+        }
+
+        .theme-toggle {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 16px;
+            border-radius: 100px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        /* --- MAIN LAYOUT --- */
+        .container {
+            max-width: 1200px;
+            margin: 100px auto 0;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 3rem;
+        }
+
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; margin-top: 80px; }
+            .sidebar { display: none; }
         }
 
         /* --- SIDEBAR --- */
         .sidebar {
-            width: 280px;
-            background: rgba(5, 5, 14, 0.8);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid var(--border);
-            padding: 2rem 1.5rem;
-            display: flex;
-            flex-direction: column;
             position: sticky;
-            top: 0;
-            height: 100vh;
-            z-index: 100;
+            top: 120px;
+            height: fit-content;
         }
 
-        .logo-container {
-            margin-bottom: 3rem;
+        .nav-menu {
+            list-style: none;
         }
 
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #fff 0%, var(--lavender) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-item {
+        .nav-link {
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 16px;
-            border-radius: 12px;
-            color: rgba(255, 255, 255, 0.6);
-            text-decoration: none;
-            margin-bottom: 8px;
-            transition: var(--transition);
-            cursor: pointer;
             font-weight: 500;
+            color: var(--text-dim);
+            border: 1px solid transparent;
         }
 
-        .nav-item:hover, .nav-item.active {
+        .nav-link:hover, .nav-link.active {
             background: var(--surface);
-            color: var(--white);
-            box-shadow: inset 0 0 20px rgba(122, 71, 243, 0.1);
+            color: var(--text);
+            border-color: var(--border);
+            box-shadow: 0 0 20px var(--glow);
         }
 
-        .nav-item.active {
+        .nav-link.active {
+            color: var(--accent);
+        }
+
+        /* --- CONTENT CARDS --- */
+        .card {
+            background: var(--surface-solid);
             border: 1px solid var(--border);
-            color: var(--violet-electric);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* --- CREDIT COUNTER --- */
-        .credits-card {
-            margin-top: auto;
-            background: linear-gradient(135deg, rgba(122, 71, 243, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.25rem;
-            text-align: center;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
-        .credits-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--lavender);
-            margin-bottom: 0.5rem;
-            display: block;
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
         }
 
-        .credits-value {
+        .tag {
             font-family: var(--font-mono);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--white);
-        }
-
-        /* --- MAIN CONTENT --- */
-        .main-content {
-            flex: 1;
-            padding: 2rem 3rem;
-            max-width: 1000px;
-        }
-
-        .hero-section {
-            text-align: center;
-            margin-bottom: 4rem;
-            padding-top: 2rem;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            padding: 6px 16px;
-            background: rgba(122, 71, 243, 0.1);
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--lavender);
-            margin-bottom: 1.5rem;
+            color: var(--accent-alt);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+        }
+
+        h1, h2, h3 {
+            letter-spacing: -0.04em;
+            line-height: 1.1;
         }
 
         .hero-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(to bottom, #fff, #a5a5a5);
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--text), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero-subtitle {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.6);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* --- CARDS & PANELS --- */
-        .panel {
-            display: none;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .panel.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .glass-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-            transition: var(--transition);
-            margin-bottom: 2rem;
-        }
-
-        .glass-card:hover {
-            border-color: var(--border-hover);
-            box-shadow: 0 0 40px rgba(122, 71, 243, 0.1);
-        }
-
-        /* --- FORM ELEMENTS --- */
-        .form-grid {
+        /* --- GENERATOR PRO --- */
+        .grid-inputs {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
         }
 
-        .input-group {
+        .input-box {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
 
         label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--lavender);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         input, select, textarea {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--bg);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px 16px;
-            color: var(--white);
+            padding: 14px 18px;
+            border-radius: 14px;
+            color: var(--text);
             font-family: var(--font-main);
-            transition: var(--transition);
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
 
-        input:focus, select:focus {
+        input:focus {
             outline: none;
-            border-color: var(--violet-electric);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 15px rgba(122, 71, 243, 0.2);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--glow);
         }
 
-        .btn-primary {
-            background: var(--violet-electric);
+        .btn-action {
+            background: var(--accent);
             color: white;
             border: none;
-            padding: 16px 32px;
-            border-radius: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            width: 100%;
-            margin-top: 1rem;
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
             font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(122, 71, 243, 0.4);
-            filter: brightness(1.1);
+        .btn-action:hover {
+            filter: brightness(1.2);
+            transform: scale(1.02);
+            box-shadow: 0 0 30px var(--glow);
         }
 
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        /* --- OUTPUT BLOCK --- */
-        .output-container {
+        /* --- CREDITS SYSTEM --- */
+        .credits-hub {
+            background: linear-gradient(135deg, var(--surface-solid), var(--bg));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
             margin-top: 2rem;
-            position: relative;
         }
 
-        .code-block {
-            background: #000;
+        .credit-val {
+            font-family: var(--font-mono);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-alt);
+        }
+
+        /* --- VIDEO HUB --- */
+        .video-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .video-item {
+            background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 1.5rem;
-            font-family: var(--font-mono);
-            font-size: 0.9rem;
-            color: var(--lavender);
-            white-space: pre-wrap;
-            position: relative;
-            min-height: 100px;
-        }
-
-        .copy-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--border);
-            color: var(--white);
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.7rem;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
         }
 
-        .copy-btn:hover {
-            background: var(--violet-electric);
+        .video-item:hover {
+            background: var(--surface-solid);
+            border-color: var(--accent);
         }
 
-        /* --- VISUALIZER --- */
-        .visualizer-container {
-            margin-top: 2rem;
-            height: 40px;
-            display: flex;
-            align-items: flex-end;
-            gap: 3px;
-        }
-
-        .vis-bar {
-            flex: 1;
-            background: linear-gradient(to top, var(--violet-electric), var(--cyan-electric));
-            border-radius: 2px;
-            transition: height 0.1s ease;
-        }
-
-        /* --- MOBILE NAV --- */
-        .mobile-nav {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(5, 5, 14, 0.9);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border);
-            padding: 12px;
-            justify-content: space-around;
-            z-index: 1000;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar { display: none; }
-            .mobile-nav { display: flex; }
-            .main-content { padding: 1rem; padding-bottom: 80px; }
-            .hero-title { font-size: 2.5rem; }
-            .form-grid { grid-template-columns: 1fr; }
-            .app-container { flex-direction: column; }
-        }
-
-        /* --- TIP POINTER --- */
-        .tip-pointer {
+        .ts-chip {
             display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: var(--cyan-electric);
-            border-radius: 50%;
-            margin-left: 6px;
-            box-shadow: 0 0 10px var(--cyan-electric);
-            animation: pulse-tip 1.5s infinite;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            background: var(--bg);
+            border-radius: 6px;
+            margin: 4px;
+            color: var(--accent);
+            text-decoration: none;
         }
 
-        @keyframes pulse-tip {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.5); opacity: 0.5; }
-            100% { transform: scale(1); opacity: 1; }
+        /* --- ANIMATIONS --- */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- ADMIN PANEL --- */
-        #admin-trigger {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            width: 20px;
-            height: 20px;
-            opacity: 0.1;
-            cursor: pointer;
-            z-index: 9999;
-        }
+        .panel { display: none; animation: slideUp 0.5s ease forwards; }
+        .panel.active { display: block; }
+
     </style>
 </head>
-<body>
-    <canvas id="canvas-bg"></canvas>
-    <div class="glow-orb"></div>
+<body data-theme="dark">
+    <canvas id="cyber-canvas"></canvas>
 
-    <div class="app-container">
-        <!-- SIDEBAR -->
+    <nav class="nav-top">
+        <div class="logo">SUNO <span>GUÍA MAESTRA</span></div>
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <div id="status-dot" style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981;"></div>
+            <button class="theme-toggle" onclick="toggleTheme()">MODO LIGHT</button>
+        </div>
+    </nav>
+
+    <div class="container">
         <aside class="sidebar">
-            <div class="logo-container">
-                <div class="logo-text">SUNO GUÍA MAESTRA</div>
-                <div style="font-size: 0.65rem; color: var(--lavender); letter-spacing: 0.2em; margin-top: 4px;">BY GGLABS BOLIVIA</div>
-            </div>
+            <ul class="nav-menu">
+                <li class="nav-link active" onclick="showTab('home', this)">🏠 Dashboard</li>
+                <li class="nav-link" onclick="showTab('studio', this)">🎛️ Studio Pro</li>
+                <li class="nav-link" onclick="showTab('max', this)">⚡ Max Mode</li>
+                <li class="nav-link" onclick="showTab('academy', this)">▶ Academy</li>
+                <li class="nav-link" onclick="showTab('checklist', this)">✓ Checklist</li>
+            </ul>
 
-            <nav>
-                <div class="nav-item active" onclick="switchTab('generador', this)">
-                    <span>🎛️</span> Generador
-                </div>
-                <div class="nav-item" onclick="switchTab('maxmode', this)">
-                    <span>⚡</span> Max Mode
-                </div>
-                <div class="nav-item" onclick="switchTab('playbooks', this)">
-                    <span>📼</span> Playbooks
-                </div>
-                <div class="nav-item" onclick="switchTab('modos', this)">
-                    <span>🧩</span> Modos
-                </div>
-                <div class="nav-item" onclick="switchTab('checklist', this)">
-                    <span>✓</span> Checklist
-                </div>
-            </nav>
-
-            <div class="credits-card">
-                <span class="credits-label">Créditos Disponibles</span>
-                <div class="credits-value" id="credit-count">10,000</div>
-                <div style="font-size: 0.6rem; color: rgba(255,255,255,0.4); margin-top: 8px;">GGLabs Premium Access</div>
-            </div>
-
-            <div class="visualizer-container" id="sidebar-vis">
-                <!-- Bars generated by JS -->
+            <div class="credits-hub">
+                <label>CRÉDITOS DISPONIBLES</label>
+                <div class="credit-val" id="credits">10,000</div>
+                <div style="font-size: 0.6rem; opacity: 0.5; margin-top: 5px;">GGLABS EXPERT ACCESS</div>
             </div>
         </aside>
 
-        <!-- MAIN CONTENT -->
-        <main class="main-content">
-            <!-- HERO -->
-            <section class="hero-section">
-                <div class="hero-badge">Método Probado · 13 Videos Indexados</div>
-                <h1 class="hero-title">Domina Suno AI de verdad</h1>
-                <p class="hero-subtitle">La herramienta definitiva que comprime 93 minutos de contenido en una sola interfaz interactiva. Crea música profesional ahora.</p>
-            </section>
+        <main>
+            <!-- TAB: HOME -->
+            <div id="tab-home" class="panel active">
+                <h1 class="hero-title">Domina Suno AI <br>como un Experto.</h1>
+                <p style="font-size: 1.2rem; color: var(--text-dim); max-width: 600px; margin-bottom: 3rem;">
+                    La central de inteligencia musical de GGLabs. Optimizador de prompts, códigos ocultos y 93 minutos de ingeniería sonora comprimidos.
+                </p>
 
-            <!-- TAB: GENERADOR -->
-            <div id="tab-generador" class="panel active">
-                <div class="glass-card">
-                    <h2 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
-                        Constructor de Canciones <span class="tip-pointer"></span>
-                    </h2>
-                    <div class="form-grid">
-                        <div class="input-group">
-                            <label>Género Principal</label>
-                            <input type="text" id="f-genre" placeholder="ej: Trap, Reggaeton, Pop...">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="tag">System Status</div>
+                        <div style="font-family: var(--font-mono); font-size: 0.8rem;">v3.0.0-CYBER</div>
+                    </div>
+                    <h3>Bienvenido al Laboratorio</h3>
+                    <p style="margin-top: 1rem; color: var(--text-dim);">
+                        Esta herramienta está diseñada como una <strong>Ayuda Memoria Dinámica</strong>. Navega por las secciones para optimizar tu flujo de trabajo en Suno.
+                    </p>
+                </div>
+            </div>
+
+            <!-- TAB: STUDIO -->
+            <div id="tab-studio" class="panel">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="tag">Prompt Engineering</div>
+                        <div class="tag" style="color: var(--accent);">Expert Mode</div>
+                    </div>
+                    <h2>Studio Pro Optimizer</h2>
+                    <p style="margin: 1rem 0 2rem; color: var(--text-dim);">Genera prompts técnicos de alta fidelidad. Cada generación consume 10 créditos.</p>
+
+                    <div class="grid-inputs">
+                        <div class="input-box">
+                            <label>Género & Estilo</label>
+                            <input type="text" id="p-genre" placeholder="ej: Phonk, Melodic Techno...">
                         </div>
-                        <div class="input-group">
-                            <label>Sub-género</label>
-                            <input type="text" id="f-sub" placeholder="ej: Melodic, Dark, Lo-fi...">
-                        </div>
-                        <div class="input-group">
-                            <label>Mood / Estado</label>
-                            <select id="f-mood">
-                                <option value="emotional, dark, nostalgic">🌑 Dark & Nostálgico</option>
-                                <option value="energetic, hype, aggressive">⚡ Energético & Agresivo</option>
-                                <option value="romantic, smooth, sensual">💜 Romántico & Sensual</option>
-                                <option value="happy, uplifting, euphoric">☀️ Feliz & Eufórico</option>
-                                <option value="mysterious, ethereal, dreamy">🌙 Misterioso & Etéreo</option>
-                                <option value="epic, triumphant, orchestral">👑 Épico & Triunfal</option>
+                        <div class="input-box">
+                            <label>Inferencia de Mood</label>
+                            <select id="p-mood">
+                                <option value="dark, cinematic, aggressive">🌑 Dark Cyberpunk</option>
+                                <option value="uplifting, euphoric, bright">☀️ Solar Pop</option>
+                                <option value="melancholic, lo-fi, intimate">💜 Introspective</option>
+                                <option value="experimental, glitchy, raw">🧪 Experimental</option>
                             </select>
                         </div>
-                        <div class="input-group">
-                            <label>BPM (Tempo)</label>
-                            <input type="number" id="f-bpm" value="120" min="60" max="200">
+                        <div class="input-box">
+                            <label>BPM / Energía</label>
+                            <input type="number" id="p-bpm" value="128">
                         </div>
-                        <div class="input-group">
-                            <label>Tipo de Voz</label>
-                            <select id="f-voice">
-                                <option value="male, expressive">Masculina Expresiva</option>
-                                <option value="female, powerful">Femenina Poderosa</option>
-                                <option value="male, deep">Masculina Grave</option>
-                                <option value="female, ethereal">Femenina Etérea</option>
-                                <option value="duet, male and female">Dueto</option>
-                                <option value="instrumental">Solo Instrumental</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label>Estructura</label>
-                            <select id="f-struct">
-                                <option value="Intro, Verse, Chorus, Bridge, Outro">🎯 Completa (Estándar)</option>
-                                <option value="TikTok Hook-First, immediate drop">📱 TikTok Hook-First</option>
-                                <option value="EDM Build-up, Heavy Drop">🎪 Con Drop EDM</option>
-                                <option value="Radio Edit format">🎸 Formato Radio</option>
+                        <div class="input-box">
+                            <label>Vocal Profile</label>
+                            <select id="p-voice">
+                                <option value="male, deep, processed">Masculina Grave</option>
+                                <option value="female, ethereal, airy">Femenina Etérea</option>
+                                <option value="distorted, robotic, vocoder">Robótica / Glitch</option>
+                                <option value="instrumental, no vocals">Solo Instrumental</option>
                             </select>
                         </div>
                     </div>
-                    <div class="input-group" style="margin-top: 1.5rem;">
-                        <label>Temática / Idea Libre</label>
-                        <textarea id="f-theme" rows="2" placeholder="Describe tu canción... ej: una balada sobre perder algo que nunca fue tuyo"></textarea>
+
+                    <button class="btn-action" onclick="generateExpertPrompt()">
+                        ✦ OPTIMIZAR PROMPT
+                    </button>
+
+                    <div id="output-wrap" style="margin-top: 2rem; display: none;">
+                        <label>PROMPT GENERADO</label>
+                        <div id="output-text" style="background: var(--bg); padding: 1.5rem; border-radius: 16px; font-family: var(--font-mono); font-size: 0.9rem; border: 1px solid var(--accent); margin-top: 10px; position: relative;">
+                            <button onclick="copyPrompt()" style="position: absolute; top: 10px; right: 10px; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 4px 8px; border-radius: 6px; font-size: 0.6rem; cursor: pointer;">COPIAR</button>
+                            <span id="prompt-content"></span>
+                        </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- TAB: MAX -->
+            <div id="tab-max" class="panel">
+                <div class="card" style="border-color: #f43f5e;">
+                    <div class="tag" style="background: #f43f5e; color: white; border: none;">Danger Zone</div>
+                    <h2 style="margin-top: 1.5rem;">MAX MODE INJECTION</h2>
+                    <p style="margin: 1rem 0; color: var(--text-dim);">Códigos de backend para forzar el motor de Suno a su máxima capacidad de mezcla.</p>
                     
-                    <button class="btn-primary" onclick="generatePrompt()">
-                        ✦ GENERAR PROMPT (10 Créditos)
+                    <div style="background: #000; padding: 2rem; border-radius: 16px; font-family: var(--font-mono); color: #f43f5e; border: 1px solid #f43f5e;">
+                        is mode max<br>
+                        quality max max<br>
+                        realins max max<br>
+                        real instrument max max
+                    </div>
+                    <button class="btn-action" style="background: #f43f5e;" onclick="copyText('is mode max\nquality max max\nrealins max max\nreal instrument max max')">
+                        COPIAR CÓDIGOS DE INYECCIÓN
                     </button>
                 </div>
-
-                <div class="output-container" id="output-wrap" style="display: none;">
-                    <div class="code-block" id="output-text"></div>
-                    <button class="copy-btn" onclick="copyPrompt()">Copiar</button>
-                </div>
             </div>
 
-            <!-- TAB: MAX MODE -->
-            <div id="tab-maxmode" class="panel">
-                <div class="glass-card" style="border-color: var(--magenta);">
-                    <h2 style="color: var(--magenta); margin-bottom: 1rem;">⚡ MAX MODE ACTIVATED</h2>
-                    <p style="margin-bottom: 1.5rem; font-size: 0.9rem;">Códigos ocultos para forzar la calidad máxima en el backend de Suno. Mejora la mezcla y presencia instrumental.</p>
-                    
-                    <div class="code-block" style="color: var(--magenta); border-color: var(--magenta);">
-is mode max
-quality max max
-realins max max
-real instrument max max
-                    </div>
-                    <button class="btn-primary" style="background: var(--magenta);" onclick="copyText('is mode max\nquality max max\nrealins max max\nreal instrument max max')">
-                        COPIAR CÓDIGOS MAX
-                    </button>
-                </div>
-            </div>
-
-            <!-- OTROS TABS (Placeholder para brevedad, se pueden expandir igual) -->
-            <div id="tab-playbooks" class="panel">
-                <div class="glass-card">
-                    <h2>📼 Playbooks Estratégicos</h2>
-                    <p>Prompts pre-construidos para resultados garantizados.</p>
-                    <!-- Contenido de playbooks -->
-                </div>
-            </div>
-
-            <div id="tab-modos" class="panel">
-                <div class="glass-card">
-                    <h2>🧩 Modos GPT & Arquitectura</h2>
-                    <p>Entiende cómo piensa la IA para mejores resultados.</p>
-                </div>
-            </div>
-
-            <div id="tab-checklist" class="panel">
-                <div class="glass-card">
-                    <h2>✓ Checklist de Producción</h2>
-                    <p>No publiques sin revisar estos puntos clave.</p>
+            <!-- TAB: ACADEMY -->
+            <div id="tab-academy" class="panel">
+                <h2>Academy Hub</h2>
+                <p style="margin-bottom: 2rem; color: var(--text-dim);">13 Videos de ingeniería sonora indexados por GGLabs.</p>
+                
+                <div class="video-grid" id="video-list">
+                    <!-- JS Render -->
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- MOBILE NAV -->
-    <div class="mobile-nav">
-        <div onclick="switchTab('generador')">🎛️</div>
-        <div onclick="switchTab('maxmode')">⚡</div>
-        <div onclick="switchTab('playbooks')">📼</div>
-        <div onclick="switchTab('checklist')">✓</div>
-    </div>
-
-    <div id="admin-trigger" onclick="adminReload()"></div>
-
     <script>
-        // --- INITIAL STATE ---
-        let credits = parseInt(localStorage.getItem('suno_credits')) || 10000;
-        document.getElementById('credit-count').textContent = credits.toLocaleString();
-
-        // --- BACKGROUND PARTICLES ---
-        const canvas = document.getElementById('canvas-bg');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function initParticles() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = [];
-            for(let i = 0; i < 100; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 2 + 0.5,
-                    speedY: Math.random() * 0.5 + 0.2,
-                    opacity: Math.random() * 0.5
-                });
+        // --- THEME ENGINE ---
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.querySelector('.theme-toggle');
+            if(body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                btn.textContent = 'MODO DARK';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                btn.textContent = 'MODO LIGHT';
             }
+            playTone('C5');
         }
 
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.y -= p.speedY;
-                if(p.y < 0) p.y = canvas.height;
-                ctx.fillStyle = `rgba(122, 71, 243, ${p.opacity})`;
+        // --- CANVAS CYBER BACKGROUND ---
+        const canvas = document.getElementById('cyber-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, grid = [];
+
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        function drawGrid() {
+            ctx.clearRect(0, 0, width, height);
+            const theme = document.body.getAttribute('data-theme');
+            ctx.strokeStyle = theme === 'dark' ? 'rgba(122, 71, 243, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+            ctx.lineWidth = 1;
+
+            const step = 50;
+            const offset = (Date.now() / 50) % step;
+
+            for(let x = offset; x < width; x += step) {
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
-            });
-            requestAnimationFrame(animateParticles);
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            for(let y = offset; y < height; y += step) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+            requestAnimationFrame(drawGrid);
         }
 
-        window.addEventListener('resize', initParticles);
-        initParticles();
-        animateParticles();
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        drawGrid();
 
-        // --- VISUALIZER ---
-        const visContainer = document.getElementById('sidebar-vis');
-        for(let i = 0; i < 20; i++) {
-            const bar = document.createElement('div');
-            bar.className = 'vis-bar';
-            bar.style.height = '10px';
-            visContainer.appendChild(bar);
-        }
-
-        function animateVis() {
-            const bars = document.querySelectorAll('.vis-bar');
-            bars.forEach((bar, i) => {
-                const h = Math.sin(Date.now() / 200 + i) * 15 + 20;
-                bar.style.height = `${h}px`;
-            });
-            requestAnimationFrame(animateVis);
-        }
-        animateVis();
-
-        // --- TABS ---
-        function switchTab(tabId, el) {
+        // --- NAVIGATION ---
+        function showTab(tabId, el) {
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
-            
-            if(el) {
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                el.classList.add('active');
-            }
-            
-            // Sound effect
-            playClickSound();
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            el.classList.add('active');
+            playTone('G4');
         }
 
-        function playClickSound() {
+        // --- AUDIO ENGINE ---
+        function playTone(note) {
             const synth = new Tone.Synth().toDestination();
-            const notes = ['C4', 'E4', 'G4', 'B4'];
-            const randomNote = notes[Math.floor(Math.random() * notes.length)];
-            synth.triggerAttackRelease(randomNote, "8n");
+            synth.volume.value = -15;
+            synth.triggerAttackRelease(note, "16n");
         }
 
-        // --- GENERATOR LOGIC ---
-        function generatePrompt() {
+        // --- CREDITS & LOGIC ---
+        let credits = parseInt(localStorage.getItem('suno_credits_v3')) || 10000;
+        document.getElementById('credits').textContent = credits.toLocaleString();
+
+        function generateExpertPrompt() {
             if(credits < 10) {
-                alert("Créditos insuficientes. Contacta a Univers77 para recargar.");
+                alert("CRÉDITOS AGOTADOS. CONTACTA A UNIVERS77.");
                 return;
             }
 
-            const genre = document.getElementById('f-genre').value || "Pop";
-            const sub = document.getElementById('f-sub').value;
-            const mood = document.getElementById('f-mood').value;
-            const bpm = document.getElementById('f-bpm').value;
-            const voice = document.getElementById('f-voice').value;
-            const struct = document.getElementById('f-struct').value;
-            const theme = document.getElementById('f-theme').value;
+            const genre = document.getElementById('p-genre').value || "Electronic";
+            const mood = document.getElementById('p-mood').value;
+            const bpm = document.getElementById('p-bpm').value;
+            const voice = document.getElementById('p-voice').value;
 
-            let prompt = `[Style: ${genre}${sub ? ', ' + sub : ''}]\n`;
-            prompt += `[Mood: ${mood}]\n`;
-            prompt += `[Tempo: ${bpm} BPM]\n`;
-            prompt += `[Vocal: ${voice}]\n`;
-            prompt += `[Structure: ${struct}]\n`;
-            if(theme) prompt += `[Theme: ${theme}]\n`;
-            prompt += `[Production: High fidelity, studio master, clean mix]`;
+            const prompt = `[Style: ${genre}, high-fidelity production]\n[Mood: ${mood}]\n[Tempo: ${bpm} BPM]\n[Vocal: ${voice}]\n[Mastering: Professional studio mix, wide stereo image, clear transients]`;
 
-            document.getElementById('output-text').textContent = prompt;
+            document.getElementById('prompt-content').textContent = prompt;
             document.getElementById('output-wrap').style.display = 'block';
             
-            // Update credits
             credits -= 10;
-            updateCredits();
-            playClickSound();
-        }
-
-        function updateCredits() {
-            localStorage.setItem('suno_credits', credits);
-            document.getElementById('credit-count').textContent = credits.toLocaleString();
+            localStorage.setItem('suno_credits_v3', credits);
+            document.getElementById('credits').textContent = credits.toLocaleString();
+            playTone('C6');
         }
 
         function copyPrompt() {
-            const text = document.getElementById('output-text').textContent;
+            const text = document.getElementById('prompt-content').textContent;
             copyText(text);
         }
 
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => {
-                alert("¡Copiado al portapapeles!");
+                alert("COPIADO AL PORTAPAPELES");
+                playTone('E6');
             });
         }
 
-        // --- ADMIN RELOAD ---
-        function adminReload() {
-            const pass = prompt("Admin Key:");
-            if(pass === "gglabs2026") {
-                credits = 10000;
-                updateCredits();
-                alert("Créditos restaurados a 10,000");
-            }
+        // --- ACADEMY DATA ---
+        const VIDEOS = [
+            { title: "Prompts Correctos vs Largos", id: "wawkrWw2In8", ts: ["0:28", "1:27", "8:50"] },
+            { title: "Max Mode - Testeo Completo", id: "XfFG27IkjIM", ts: ["1:25", "4:45", "6:34"] },
+            { title: "Studio Mode - Instrumentos", id: "r60dTNcZntE", ts: ["2:30", "8:20", "10:45"] }
+        ];
+
+        function renderVideos() {
+            const container = document.getElementById('video-list');
+            VIDEOS.forEach(v => {
+                const div = document.createElement('div');
+                div.className = 'video-item';
+                div.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h4 style="font-size: 1rem;">${v.title}</h4>
+                        <a href="https://youtube.com/watch?v=${v.id}" target="_blank" style="color: var(--accent); font-size: 0.7rem; font-weight: 700;">VER VIDEO</a>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        ${v.ts.map(t => `<a href="https://youtube.com/watch?v=${v.id}&t=${t.split(':')[0]}m${t.split(':')[1]}s" class="ts-chip" target="_blank">${t}</a>`).join('')}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
         }
+        renderVideos();
+
     </script>
 </body>
 </html>
