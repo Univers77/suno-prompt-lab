@@ -3,148 +3,489 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>SONIC ARCHITECT — Expert Neural Audio Copilot v5.0</title>
+    <title>SONIC ARCHITECT v6.0 — Neural Audio Copilot Cyberpunk</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&family=Audiowide&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #04080f;
-            --surface: rgba(255, 255, 255, 0.03);
-            --surface-solid: #070d18;
-            --border: rgba(0, 229, 195, 0.15);
-            --accent: #00e5c3;
-            --accent-glow: rgba(0, 229, 195, 0.2);
-            --gold: #f0b429;
-            --rose: #ff4d6d;
-            --text: #e8f0fe;
-            --text-dim: #8fa6cc;
-            --font-header: 'Syne', sans-serif;
-            --font-main: 'Inter', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-            --radius: 20px;
-            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        [data-theme="light"] {
-            --bg: #f8fafc;
-            --surface: rgba(0, 0, 0, 0.03);
-            --surface-solid: #ffffff;
-            --border: rgba(0, 229, 195, 0.2);
-            --accent: #0d9488;
-            --text: #0f172a;
-            --text-dim: #64748b;
+            --primary: #00ff88;
+            --secondary: #ff00ff;
+            --tertiary: #00ffff;
+            --dark: #0a0e27;
+            --darker: #050812;
+            --surface: rgba(10, 14, 39, 0.7);
+            --surface-solid: rgba(15, 20, 50, 0.95);
+            --border: rgba(0, 255, 136, 0.2);
+            --glow: rgba(0, 255, 136, 0.4);
+            --text: #f0f8ff;
+            --text-dim: #a0b0ff;
+            --font-header: 'Orbitron', sans-serif;
+            --font-main: 'Space Mono', monospace;
+            --font-accent: 'Audiowide', cursive;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
             font-family: var(--font-main);
-            background-color: var(--bg);
+            background: linear-gradient(135deg, var(--darker) 0%, #1a0033 50%, var(--dark) 100%);
             color: var(--text);
-            transition: background-color 0.6s ease, color 0.6s ease;
             overflow-x: hidden;
             min-height: 100vh;
-            line-height: 1.6;
+            position: relative;
         }
 
-        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.4; pointer-events: none; }
+        /* ─── ANIMATED BACKGROUND ─── */
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; opacity: 0.5; }
+        #particle-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
+        /* ─── GLITCH EFFECT ─── */
+        @keyframes glitch {
+            0% { clip-path: inset(40% 0 61% 0); transform: translate(-2px, -2px); }
+            20% { clip-path: inset(92% 0 1% 0); transform: translate(2px, 2px); }
+            40% { clip-path: inset(43% 0 1% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(25% 0 58% 0); transform: translate(2px, -2px); }
+            80% { clip-path: inset(54% 0 7% 0); transform: translate(-2px, -2px); }
+            100% { clip-path: inset(58% 0 43% 0); transform: translate(2px, 2px); }
+        }
+
+        @keyframes neon-glow {
+            0%, 100% { text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary), 0 0 30px var(--secondary); }
+            50% { text-shadow: 0 0 20px var(--primary), 0 0 40px var(--secondary), 0 0 60px var(--tertiary); }
+        }
+
+        @keyframes float { 
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { border-color: var(--primary); box-shadow: 0 0 10px var(--glow); }
+            50% { border-color: var(--secondary); box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); }
+        }
+
+        /* ─── HEADER ─── */
         .nav-header {
-            position: fixed; top: 0; width: 100%; padding: 1rem 2rem;
+            position: fixed; top: 0; width: 100%; padding: 1.5rem 2rem;
             display: flex; justify-content: space-between; align-items: center;
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border); z-index: 1000;
-            background: rgba(4, 8, 15, 0.8);
+            border-bottom: 2px solid var(--primary);
+            z-index: 1000;
+            background: rgba(5, 8, 18, 0.9);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
         }
 
-        .brand { font-family: var(--font-header); font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; }
-        .brand span { color: var(--accent); }
+        .brand {
+            font-family: var(--font-header);
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            animation: neon-glow 3s infinite;
+        }
 
+        .brand span { color: var(--secondary); }
+
+        /* ─── MAIN LAYOUT ─── */
         .app-shell {
-            max-width: 1400px; margin: 80px auto 0; padding: 2rem;
-            display: grid; grid-template-columns: 280px 1fr; gap: 3rem;
+            max-width: 1600px; margin: 100px auto 0; padding: 2rem;
+            display: grid; grid-template-columns: 300px 1fr; gap: 3rem;
         }
 
         @media (max-width: 1024px) {
-            .app-shell { grid-template-columns: 1fr; margin-top: 70px; padding: 1rem; }
+            .app-shell { grid-template-columns: 1fr; margin-top: 80px; padding: 1rem; }
             .sidebar { display: none; }
             .mobile-nav { display: flex; }
         }
 
-        .sidebar { position: sticky; top: 110px; height: calc(100vh - 140px); display: flex; flex-direction: column; gap: 1rem; }
-        .menu-list { list-style: none; }
-        .menu-item {
-            padding: 12px 18px; border-radius: var(--radius); margin-bottom: 4px;
-            cursor: pointer; transition: var(--transition); display: flex; align-items: center;
-            gap: 12px; font-weight: 600; font-size: 0.9rem; color: var(--text-dim);
+        /* ─── SIDEBAR ─── */
+        .sidebar {
+            position: sticky; top: 120px; height: calc(100vh - 150px);
+            display: flex; flex-direction: column; gap: 1rem;
         }
-        .menu-item:hover, .menu-item.active { background: var(--surface); color: var(--text); }
-        .menu-item.active { color: var(--accent); background: var(--accent-glow); border: 1px solid var(--border); }
 
-        .panel { display: none; animation: fadeIn 0.5s ease forwards; }
+        .menu-list { list-style: none; }
+
+        .menu-item {
+            padding: 14px 20px; border-radius: 12px; margin-bottom: 6px;
+            cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; gap: 12px;
+            font-weight: 700; font-size: 0.95rem;
+            color: var(--text-dim);
+            border: 2px solid transparent;
+            background: var(--surface);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, var(--glow), transparent);
+            transition: left 0.5s;
+        }
+
+        .menu-item:hover::before { left: 100%; }
+        .menu-item:hover { color: var(--primary); border-color: var(--primary); transform: translateX(5px); }
+        .menu-item.active { color: var(--text); border-color: var(--secondary); background: rgba(255, 0, 255, 0.1); }
+
+        /* ─── PANELS ─── */
+        .panel { display: none; animation: fadeIn 0.6s ease forwards; }
         .panel.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .hero-title { font-family: var(--font-header); font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 800; line-height: 1; letter-spacing: -0.04em; margin-bottom: 1.5rem; }
-        .hero-title span { background: linear-gradient(90deg, var(--accent), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        /* ─── HERO SECTION ─── */
+        .hero-title {
+            font-family: var(--font-header);
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            animation: neon-glow 4s infinite;
+        }
 
-        .card { background: var(--surface-solid); border: 1px solid var(--border); border-radius: 24px; padding: 2rem; margin-bottom: 1.5rem; transition: var(--transition); position: relative; overflow: hidden; }
-        .card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        
-        .badge { font-family: var(--font-mono); font-size: 0.7rem; padding: 4px 12px; border-radius: 100px; background: var(--surface); border: 1px solid var(--border); color: var(--accent); text-transform: uppercase; font-weight: 700; margin-bottom: 1rem; display: inline-block; }
+        .hero-title span { color: var(--secondary); }
 
-        /* --- STUDIO --- */
-        .field { margin-bottom: 1.5rem; }
-        .field label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; margin-bottom: 8px; font-family: var(--font-mono); }
-        textarea, input, select { width: 100%; background: #030710; border: 1px solid var(--border); padding: 14px; border-radius: 12px; color: var(--text); font-family: var(--font-main); font-size: 0.95rem; }
-        textarea:focus { outline: none; border-color: var(--accent); }
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
 
-        .btn-action { background: var(--accent); color: #04080f; border: none; padding: 16px; border-radius: 14px; font-weight: 800; cursor: pointer; width: 100%; transition: var(--transition); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-action:hover { filter: brightness(1.1); box-shadow: 0 0 20px var(--accent-glow); }
+        /* ─── CARDS ─── */
+        .card {
+            background: var(--surface-solid);
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
 
-        /* --- VIDEO GRID --- */
-        .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-        .video-card { background: var(--surface-solid); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; transition: var(--transition); }
-        .video-card:hover { border-color: var(--gold); }
-        .video-thumb { width: 100%; aspect-ratio: 16/9; background: #000; display: flex; align-items: center; justify-content: center; position: relative; }
-        .video-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
-        .play-icon { position: absolute; font-size: 2.5rem; color: white; opacity: 0.8; }
-        .video-info { padding: 1.25rem; }
-        .video-info h4 { font-family: var(--font-header); margin-bottom: 8px; font-size: 1rem; }
-        .btn-video { display: block; text-align: center; background: rgba(240, 180, 41, 0.1); color: var(--gold); border: 1px solid rgba(240, 180, 41, 0.3); padding: 10px; border-radius: 10px; text-decoration: none; font-size: 0.8rem; font-weight: 700; transition: 0.2s; }
-        .btn-video:hover { background: var(--gold); color: #000; }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
 
-        .output-box { background: #010409; border: 1px dashed var(--accent); padding: 1.5rem; border-radius: 16px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); position: relative; margin-top: 1.5rem; white-space: pre-wrap; }
-        .copy-tag { position: absolute; top: 10px; right: 10px; font-size: 0.6rem; background: var(--surface); padding: 2px 6px; border-radius: 4px; cursor: pointer; }
+        .card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-8px);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.3), inset 0 0 20px rgba(0, 255, 136, 0.05);
+        }
 
-        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(4, 8, 15, 0.95); border-top: 1px solid var(--border); padding: 0.8rem; justify-content: space-around; z-index: 1000; }
-        .nav-icon { font-size: 1.4rem; opacity: 0.5; cursor: pointer; }
-        .nav-icon.active { opacity: 1; color: var(--accent); }
+        .card h2, .card h3, .card h4 {
+            font-family: var(--font-header);
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge {
+            display: inline-block;
+            font-family: var(--font-header);
+            font-size: 0.7rem;
+            padding: 6px 14px;
+            border-radius: 100px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        /* ─── FORM ELEMENTS ─── */
+        .field { margin-bottom: 1.5rem; position: relative; z-index: 1; }
+        .field label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.1em;
+        }
+
+        textarea, input, select {
+            width: 100%;
+            background: rgba(5, 8, 18, 0.8);
+            border: 2px solid var(--primary);
+            padding: 14px;
+            border-radius: 10px;
+            color: var(--text);
+            font-family: var(--font-main);
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        textarea:focus, input:focus, select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+            background: rgba(5, 8, 18, 0.95);
+        }
+
+        /* ─── BUTTONS ─── */
+        .btn-action {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--darker);
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-family: var(--font-header);
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.4s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-action::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.5s;
+        }
+
+        .btn-action:hover::before { left: 100%; }
+        .btn-action:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 255, 136, 0.5); }
+
+        /* ─── VIDEO GRID ─── */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .video-card {
+            background: var(--surface-solid);
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .video-card:hover {
+            border-color: var(--secondary);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.4);
+        }
+
+        .video-thumb {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #1a0033, #0a0e27);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: all 0.4s;
+        }
+
+        .video-card:hover .video-thumb img { opacity: 1; filter: brightness(1.2); }
+
+        .play-icon {
+            position: absolute;
+            font-size: 3rem;
+            color: var(--primary);
+            opacity: 0.8;
+            transition: all 0.3s;
+            filter: drop-shadow(0 0 10px var(--primary));
+        }
+
+        .video-card:hover .play-icon { opacity: 1; transform: scale(1.2); }
+
+        .video-info {
+            padding: 1.25rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .video-info h4 {
+            font-family: var(--font-header);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            color: var(--primary);
+        }
+
+        .video-info p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 0.75rem;
+        }
+
+        .btn-video {
+            display: block;
+            text-align: center;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-video:hover {
+            background: var(--primary);
+            color: var(--darker);
+            box-shadow: 0 0 15px var(--glow);
+        }
+
+        /* ─── OUTPUT BOX ─── */
+        .output-box {
+            background: rgba(5, 8, 18, 0.95);
+            border: 2px dashed var(--secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-family: var(--font-main);
+            font-size: 0.85rem;
+            color: var(--primary);
+            position: relative;
+            margin-top: 1.5rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            animation: pulse-border 2s infinite;
+        }
+
+        .copy-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.65rem;
+            background: var(--primary);
+            color: var(--darker);
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .copy-tag:hover { background: var(--secondary); }
+
+        /* ─── EXPERT TIPS ─── */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tip-box {
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid var(--primary);
+            padding: 1.25rem;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .tip-box:hover {
+            border-color: var(--secondary);
+            background: rgba(255, 0, 255, 0.05);
+            transform: translateY(-4px);
+        }
+
+        .tip-box h5 {
+            color: var(--primary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-family: var(--font-header);
+        }
+
+        .tip-box p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        /* ─── MOBILE NAV ─── */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(5, 8, 18, 0.95);
+            border-top: 2px solid var(--primary);
+            padding: 0.8rem;
+            justify-content: space-around;
+            z-index: 1000;
+        }
+
+        .nav-icon {
+            font-size: 1.5rem;
+            opacity: 0.5;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-icon:hover, .nav-icon.active { opacity: 1; color: var(--primary); text-shadow: 0 0 10px var(--glow); }
 
     </style>
 </head>
 <body>
     <canvas id="bg-canvas"></canvas>
+    <div id="particle-bg"></div>
 
     <header class="nav-header">
         <div class="brand">SONIC <span>ARCHITECT</span></div>
         <div style="display: flex; gap: 1rem; align-items: center;">
-            <div id="status-dot" style="width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent);"></div>
-            <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim);">SYSTEM ONLINE</span>
+            <div id="status-dot" style="width: 10px; height: 10px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 15px var(--primary); animation: pulse 2s infinite;"></div>
+            <span style="font-family: var(--font-header); font-size: 0.75rem; color: var(--primary); text-transform: uppercase;">v6.0 ONLINE</span>
         </div>
     </header>
 
     <div class="app-shell">
         <aside class="sidebar">
             <ul class="menu-list">
-                <li class="menu-item active" onclick="switchTab('home', this)"><span>🏠</span> Intelligence Hub</li>
+                <li class="menu-item active" onclick="switchTab('home', this)"><span>🎵</span> Home</li>
                 <li class="menu-item" onclick="switchTab('studio', this)"><span>🎛️</span> Neural Studio</li>
-                <li class="menu-item" onclick="switchTab('academy', this)"><span>🎓</span> Sonic Academy</li>
-                <li class="menu-item" onclick="switchTab('max', this)"><span>⚡</span> Max Precision</li>
-                <li class="menu-item" onclick="switchTab('expert', this)"><span>🧠</span> Expert Logic</li>
+                <li class="menu-item" onclick="switchTab('academy', this)"><span>🎓</span> Academy</li>
+                <li class="menu-item" onclick="switchTab('max', this)"><span>⚡</span> Max Mode</li>
+                <li class="menu-item" onclick="switchTab('expert', this)"><span>🧠</span> Expert Tips</li>
             </ul>
-            <div style="margin-top: auto; padding: 1.5rem; background: var(--surface); border-radius: 20px; border: 1px solid var(--border);">
-                <p style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 5px;">Knowledge Sync</p>
-                <div style="font-family: var(--font-mono); font-size: 1.2rem; font-weight: 700; color: var(--gold);">V5.0.4</div>
+            <div style="margin-top: auto; padding: 1.5rem; background: var(--surface); border: 2px solid var(--primary); border-radius: 12px; text-align: center;">
+                <p style="font-size: 0.65rem; color: var(--primary); text-transform: uppercase; margin-bottom: 8px;">Credits Available</p>
+                <div id="credits" style="font-family: var(--font-header); font-size: 1.8rem; font-weight: 900; color: var(--secondary);">100</div>
             </div>
         </aside>
 
@@ -152,27 +493,26 @@
             <!-- HOME -->
             <div id="tab-home" class="panel active">
                 <h1 class="hero-title">Construye el Futuro del <span>Audio Neural.</span></h1>
-                <p style="font-size: 1.2rem; color: var(--text-dim); max-width: 700px; margin-bottom: 2.5rem;">
+                <p class="hero-subtitle">
                     Bienvenido a **SONIC ARCHITECT**. No es solo un generador de prompts; es un entorno de ingeniería sonora diseñado para músicos que buscan dominar Suno AI con precisión quirúrgica.
                 </p>
 
                 <div class="card">
-                    <div class="badge">Estrategia de Inicio</div>
-                    <h3>Lógica de Mentoría Profesional</h3>
-                    <p style="margin-top: 1rem; color: var(--text-dim);">
-                        Suno no es una caja negra; es un instrumento. Para obtener resultados de nivel comercial, debes dejar de "pedir" y empezar a "arquitecturar". 
-                        Usa el **Neural Studio** para traducir emociones en parámetros técnicos y la **Academy** para entender la ciencia detrás de la IA.
+                    <div class="badge">⚡ Sistema Inteligente</div>
+                    <h3 style="margin-bottom: 1rem;">La Revolución del Audio IA</h3>
+                    <p style="color: var(--text-dim); line-height: 1.8;">
+                        Suno no es una caja negra. Es un instrumento que responde a arquitecturas sonoras precisas. Aquí aprendes a traducir emociones en parámetros técnicos, a dominar la estocasticidad neural y a generar hits de nivel comercial.
                     </p>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                    <div class="card" style="border-color: var(--gold);">
-                        <h4>11 Masterclasses</h4>
-                        <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0.5rem;">Videos indexados para dominar cada rincón del motor de Suno.</p>
+                    <div class="card">
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">17 Masterclasses</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-dim);">Videos indexados para dominar cada rincón del motor neural.</p>
                     </div>
-                    <div class="card" style="border-color: var(--rose);">
-                        <h4>Max Precision</h4>
-                        <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0.5rem;">Inyectores de código para forzar la máxima fidelidad sonora.</p>
+                    <div class="card">
+                        <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">100 Créditos</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-dim);">Optimizaciones ilimitadas para perfeccionar tus prompts.</p>
                     </div>
                 </div>
             </div>
@@ -180,84 +520,104 @@
             <!-- STUDIO -->
             <div id="tab-studio" class="panel">
                 <div class="card">
-                    <div class="badge">Neural Translator</div>
-                    <h2>Neural Studio Copilot</h2>
-                    <p style="margin: 0.5rem 0 2rem; color: var(--text-dim);">Convierte visiones artísticas en estructuras de datos optimizadas.</p>
+                    <div class="badge">🎛️ Neural Translator</div>
+                    <h2 style="margin-bottom: 0.5rem;">Neural Studio Copilot</h2>
+                    <p style="color: var(--text-dim); margin-bottom: 2rem;">Convierte visiones artísticas en arquitecturas sonoras optimizadas.</p>
 
                     <div class="field">
-                        <label>Visión Artística / Emoción</label>
+                        <label>🎨 Visión Artística / Emoción</label>
                         <textarea id="vision" rows="3" placeholder="ej: Una odisea espacial melancólica con sintetizadores analógicos y una voz etérea..."></textarea>
                     </div>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div class="field">
-                            <label>Arquitectura de Género</label>
+                            <label>🎵 Género Base</label>
                             <input type="text" id="genre" placeholder="ej: Synthwave, Cinematic, Lo-fi...">
                         </div>
                         <div class="field">
-                            <label>Configuración Vocal</label>
+                            <label>🎤 Configuración Vocal</label>
                             <select id="vocal">
-                                <option value="ethereal female, reverb-drenched">Femenina Etérea</option>
-                                <option value="gritty male, close-mic, intimate">Masculina Íntima</option>
-                                <option value="robotic vocoder, neural processed">Procesado Neural</option>
-                                <option value="pure instrumental, no vocals">Instrumental Puro</option>
+                                <option value="ethereal female, reverb-drenched, emotional">Femenina Etérea</option>
+                                <option value="gritty male, close-mic, intimate, warm">Masculina Íntima</option>
+                                <option value="robotic vocoder, neural processed, futuristic">Procesado Neural</option>
+                                <option value="pure instrumental, no vocals, symphonic">Instrumental Puro</option>
                             </select>
                         </div>
                     </div>
 
                     <button class="btn-action" onclick="architectPrompt()">
-                        ✦ Arquitecturar Sonido
+                        ✦ Arquitecturar Sonido (10 Créditos)
                     </button>
 
                     <div id="studio-out" class="output-box" style="display: none;">
-                        <div class="copy-tag" onclick="copyStudio()">COPIAR ARQUITECTURA</div>
+                        <div class="copy-tag" onclick="copyStudio()">COPIAR</div>
                         <span id="out-text"></span>
+                    </div>
+
+                    <div class="tips-grid">
+                        <div class="tip-box">
+                            <h5>💡 Tip: Objetivo Primero</h5>
+                            <p>Define si buscas demo rápida, base para producción o producto final. El objetivo cambia toda la arquitectura.</p>
+                        </div>
+                        <div class="tip-box">
+                            <h5>🎲 Tip: Estocasticidad</h5>
+                            <p>No juzgues por un resultado. Evalúa patrones en 4-6 variaciones. La diferencia es probabilidad, no error.</p>
+                        </div>
+                        <div class="tip-box">
+                            <h5>⚙️ Tip: Menos es Más</h5>
+                            <p>Demasiados tags confunden. Prioriza: 1) Respetar, 2) Cambiar, 3) Evitar. Ese orden produce mejores resultados.</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- ACADEMY -->
             <div id="tab-academy" class="panel">
-                <div class="badge">Formación de Élite</div>
-                <h2 style="margin-bottom: 2rem;">Sonic Academy — 11 Módulos Críticos</h2>
+                <div class="badge">🎓 Formación de Élite</div>
+                <h2 style="margin-bottom: 2rem;">Sonic Academy — 17 Módulos Críticos</h2>
                 <div class="video-grid" id="video-grid">
                     <!-- Videos will be injected here -->
                 </div>
             </div>
 
-            <!-- MAX -->
+            <!-- MAX MODE -->
             <div id="tab-max" class="panel">
-                <div class="card" style="border-color: var(--rose);">
-                    <div class="badge" style="background: var(--rose); color: white; border: none;">High Fidelity</div>
-                    <h2>Max Precision Injections</h2>
-                    <p style="margin: 1rem 0 2rem; color: var(--text-dim);">Inyectores de metadatos para forzar al motor neural a ignorar compresiones y priorizar la fidelidad de estudio.</p>
+                <div class="card" style="border-color: var(--secondary);">
+                    <div class="badge" style="background: rgba(255, 0, 255, 0.1); border-color: var(--secondary); color: var(--secondary);">⚡ High Fidelity</div>
+                    <h2 style="margin-bottom: 0.5rem;">Max Precision Injections</h2>
+                    <p style="color: var(--text-dim); margin-bottom: 2rem;">Inyectores de metadatos para forzar máxima calidad y fidelidad de estudio.</p>
                     
-                    <div class="output-box" style="color: var(--rose); border-color: var(--rose);">
+                    <div class="output-box" style="border-color: var(--secondary); color: var(--secondary);">
 [Style: Max Quality, Ultra Fidelity, Studio Grade]
 [Engine: Force Neural Precision]
 is mode max | quality max max | realins max max
                     </div>
-                    <button class="btn-action" style="background: var(--rose); color: white;" onclick="copyRaw('is mode max | quality max max | realins max max')">Copiar Inyectores</button>
+                    <button class="btn-action" style="background: linear-gradient(135deg, var(--secondary), var(--primary));" onclick="copyRaw('is mode max | quality max max | realins max max')">Copiar Inyectores (5 Créditos)</button>
                 </div>
             </div>
 
-            <!-- EXPERT -->
+            <!-- EXPERT TIPS -->
             <div id="tab-expert" class="panel">
                 <div class="card">
-                    <div class="badge">Lógica de Mentor</div>
-                    <h2>Principios del Sonic Architect</h2>
-                    <div style="margin-top: 1.5rem; display: grid; gap: 1.5rem;">
-                        <div>
-                            <h4 style="color: var(--accent);">01. El Objetivo manda</h4>
-                            <p style="font-size: 0.9rem; color: var(--text-dim);">No generes por azar. Define si buscas una demo rápida, una base para producción o un producto final. La arquitectura cambia según el fin.</p>
+                    <div class="badge">🧠 Lógica de Experto</div>
+                    <h2 style="margin-bottom: 2rem;">Principios del Sonic Architect</h2>
+                    
+                    <div style="display: grid; gap: 1.5rem;">
+                        <div style="border-left: 3px solid var(--primary); padding-left: 1.5rem;">
+                            <h4 style="color: var(--primary); margin-bottom: 0.5rem;">01. El Objetivo Manda</h4>
+                            <p style="color: var(--text-dim);">No generes por azar. Define si buscas una demo rápida, una base para producción o un producto final. La arquitectura cambia según el fin.</p>
                         </div>
-                        <div>
-                            <h4 style="color: var(--gold);">02. Estocasticidad Controlada</h4>
-                            <p style="font-size: 0.9rem; color: var(--text-dim);">Suno es probabilístico. No juzgues un prompt por un resultado. Evalúa patrones en 4-6 variaciones.</p>
+                        <div style="border-left: 3px solid var(--secondary); padding-left: 1.5rem;">
+                            <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">02. Estocasticidad Controlada</h4>
+                            <p style="color: var(--text-dim);">Suno es probabilístico. No juzgues un prompt por un resultado. Evalúa patrones en 4-6 variaciones. La consistencia emerge del análisis estadístico.</p>
                         </div>
-                        <div>
-                            <h4 style="color: var(--rose);">03. Menos es Más (a veces)</h4>
-                            <p style="font-size: 0.9rem; color: var(--text-dim);">Demasiados tags confunden al motor. Prioriza: 1) Respetar, 2) Cambiar, 3) Evitar.</p>
+                        <div style="border-left: 3px solid var(--tertiary); padding-left: 1.5rem;">
+                            <h4 style="color: var(--tertiary); margin-bottom: 0.5rem;">03. Arquitectura Precisa</h4>
+                            <p style="color: var(--text-dim);">Menos es más. Demasiados tags confunden. Prioriza: 1) Qué debe respetar, 2) Qué debe cambiar, 3) Qué no debe hacer. Ese orden produce resultados notablemente mejores.</p>
+                        </div>
+                        <div style="border-left: 3px solid var(--primary); padding-left: 1.5rem;">
+                            <h4 style="color: var(--primary); margin-bottom: 0.5rem;">04. Laboratorio, No Destino</h4>
+                            <p style="color: var(--text-dim);">Suno es maquetero + ideador + laboratorio. El mayor valor no siempre está en el resultado final, sino en descubrir estructuras, voces y fusiones que luego reharás mejor fuera de Suno.</p>
                         </div>
                     </div>
                 </div>
@@ -266,7 +626,7 @@ is mode max | quality max max | realins max max
     </div>
 
     <nav class="mobile-nav">
-        <div class="nav-icon active" onclick="switchTab('home', this)">🏠</div>
+        <div class="nav-icon active" onclick="switchTab('home', this)">🎵</div>
         <div class="nav-icon" onclick="switchTab('studio', this)">🎛️</div>
         <div class="nav-icon" onclick="switchTab('academy', this)">🎓</div>
         <div class="nav-icon" onclick="switchTab('max', this)">⚡</div>
@@ -274,22 +634,30 @@ is mode max | quality max max | realins max max
 
     <script>
         const VIDEOS = [
-            { title: "Dominio de Prompts: Estructura Real", id: "zVzsVOoIfLY", t: "10s" },
-            { title: "Flujo de Trabajo Profesional", id: "lZQ9gF-f9E0", t: "14s" },
-            { title: "Ingeniería de Estilo Avanzada", id: "3nL2aWNXJQw", t: "823s" },
-            { title: "Secretos del Max Mode", id: "XjmaO4ixy5Y", t: "5s" },
-            { title: "Consistencia Vocal Neural", id: "R3yMFYua2wg", t: "0s" },
-            { title: "Mezcla y Masterización IA", id: "-MMYt8zi9e0", t: "7s" },
-            { title: "Diseño de Instrumentos Reales", id: "f2msbSVOO1U", t: "8s" },
-            { title: "Arquitectura de Letras y Flow", id: "DIToC1PVXJE", t: "6s" },
-            { title: "Neural Copilot: Guía de Uso", id: "icQDqvlIj-A", t: "12s" },
-            { title: "Estrategias de Hit Viral", id: "r60dTNcZntE", t: "6s" },
-            { title: "Masterclass: El Futuro del Audio", id: "iytq802OFLo", t: "0s" }
+            { title: "Dominio de Prompts: Estructura Real", id: "zVzsVOoIfLY", t: "10s", desc: "Aprende la estructura correcta" },
+            { title: "Flujo de Trabajo Profesional", id: "lZQ9gF-f9E0", t: "14s", desc: "Optimiza tu pipeline creativo" },
+            { title: "Ingeniería de Estilo Avanzada", id: "3nL2aWNXJQw", t: "823s", desc: "Controla cada parámetro sonoro" },
+            { title: "Secretos del Max Mode", id: "XjmaO4ixy5Y", t: "5s", desc: "Fuerza la máxima fidelidad" },
+            { title: "Consistencia Vocal Neural", id: "R3yMFYua2wg", t: "0s", desc: "Mantén tu identidad vocal" },
+            { title: "Mezcla y Masterización IA", id: "-MMYt8zi9e0", t: "7s", desc: "Calidad de estudio profesional" },
+            { title: "Diseño de Instrumentos Reales", id: "f2msbSVOO1U", t: "8s", desc: "Instrumentación auténtica" },
+            { title: "Arquitectura de Letras y Flow", id: "DIToC1PVXJE", t: "6s", desc: "Composición lírica perfecta" },
+            { title: "Neural Copilot: Guía de Uso", id: "icQDqvlIj-A", t: "12s", desc: "Domina el chat inteligente" },
+            { title: "Estrategias de Hit Viral", id: "r60dTNcZntE", t: "6s", desc: "Fórmulas para éxito comercial" },
+            { title: "Masterclass: El Futuro del Audio", id: "iytq802OFLo", t: "0s", desc: "Visión futurista del audio IA" },
+            { title: "Suno Sonic Lab v4.5", id: "j6vYBqwDiuE", t: "516s", desc: "Plataforma completa explicada" },
+            { title: "Técnicas Avanzadas Parte 1", id: "duUTZlGrdds", t: "0s", desc: "Métodos profesionales nivel experto" },
+            { title: "Producción de Beats Dinámicos", id: "FwyTrsER0dw", t: "0s", desc: "Ritmo y groove perfecto" },
+            { title: "Síntesis Neural Profunda", id: "cLLXH1IfvwE", t: "1s", desc: "Comprende el motor de síntesis" },
+            { title: "Optimización de Parámetros", id: "CW-nUwyj6Ow", t: "0s", desc: "Ajustes micro para macro resultados" },
+            { title: "Integración Workflow Profesional", id: "IN_m5KAoSy4", t: "0s", desc: "Pipeline de producción real" }
         ];
+
+        let credits = 100;
 
         function initVideos() {
             const grid = document.getElementById('video-grid');
-            VIDEOS.forEach(v => {
+            VIDEOS.forEach((v, idx) => {
                 const card = document.createElement('div');
                 card.className = 'video-card';
                 card.innerHTML = `
@@ -299,7 +667,8 @@ is mode max | quality max max | realins max max
                     </div>
                     <div class="video-info">
                         <h4>${v.title}</h4>
-                        <a href="https://www.youtube.com/watch?v=${v.id}&t=${v.t}" target="_blank" class="btn-video">MEJORAR CON ESTE MÓDULO</a>
+                        <p>${v.desc}</p>
+                        <a href="https://www.youtube.com/watch?v=${v.id}&t=${v.t}" target="_blank" class="btn-video">Mejorar con este módulo</a>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -315,26 +684,36 @@ is mode max | quality max max | realins max max
         }
 
         function architectPrompt() {
+            if (credits < 10) { alert("Créditos insuficientes. Necesitas 10 créditos."); return; }
+            
             const vision = document.getElementById('vision').value || "Sonic Architecture";
             const genre = document.getElementById('genre').value || "Experimental";
             const vocal = document.getElementById('vocal').value;
             
-            let technical = "[Architecture: High Fidelity, Studio Mix]\n";
+            let technical = `[Architecture: High Fidelity, Professional Studio Mix]\n`;
             technical += `[Style: ${genre}, ${vocal}]\n`;
-            technical += `[Structure: Professional, Dynamic Range]\n`;
-            technical += `[Neural Intent: ${vision}]`;
+            technical += `[Structure: Dynamic Range, Professional Mastering]\n`;
+            technical += `[Neural Intent: ${vision}]\n`;
+            technical += `[Quality: Max Precision, Ultra Fidelity]`;
 
             document.getElementById('out-text').textContent = technical;
             document.getElementById('studio-out').style.display = 'block';
+            
+            credits -= 10;
+            document.getElementById('credits').textContent = credits;
         }
 
         function copyStudio() {
             const txt = document.getElementById('out-text').textContent;
-            navigator.clipboard.writeText(txt).then(() => alert("Arquitectura Copiada"));
+            navigator.clipboard.writeText(txt).then(() => alert("✓ Arquitectura Copiada"));
         }
 
         function copyRaw(txt) {
-            navigator.clipboard.writeText(txt).then(() => alert("Inyectores Copiados"));
+            navigator.clipboard.writeText(txt).then(() => {
+                credits -= 5;
+                document.getElementById('credits').textContent = credits;
+                alert("✓ Inyectores Copiados (-5 créditos)");
+            });
         }
 
         // Canvas BG Animation
@@ -347,10 +726,10 @@ is mode max | quality max max | realins max max
 
         function draw() {
             ctx.clearRect(0, 0, w, h);
-            ctx.strokeStyle = 'rgba(0, 229, 195, 0.05)';
+            ctx.strokeStyle = 'rgba(0, 255, 136, 0.08)';
             ctx.lineWidth = 1;
-            const step = 80;
-            const offset = (Date.now() / 50) % step;
+            const step = 100;
+            const offset = (Date.now() / 60) % step;
             for(let x = offset; x < w; x += step) {
                 ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
             }
@@ -360,6 +739,25 @@ is mode max | quality max max | realins max max
             requestAnimationFrame(draw);
         }
         draw();
+
+        // Particle effect
+        const particleBg = document.getElementById('particle-bg');
+        for(let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.style.cssText = `
+                position: absolute;
+                width: ${Math.random() * 3 + 1}px;
+                height: ${Math.random() * 3 + 1}px;
+                background: rgba(0, 255, 136, ${Math.random() * 0.5 + 0.2});
+                border-radius: 50%;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                animation: float ${Math.random() * 10 + 5}s infinite;
+                box-shadow: 0 0 ${Math.random() * 10 + 5}px rgba(0, 255, 136, 0.5);
+            `;
+            particleBg.appendChild(particle);
+        }
+
         initVideos();
     </script>
 </body>
