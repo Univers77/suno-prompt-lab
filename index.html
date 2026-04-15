@@ -3,516 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>SONIC ARCHITECT v6.0 — Neural Audio Copilot Cyberpunk</title>
+    <title>SONIC ARCHITECT v7.0 — Mentor Edition (10K Credits)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&family=Audiowide&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #00ff88;
             --secondary: #ff00ff;
             --tertiary: #00ffff;
-            --dark: #0a0e27;
-            --darker: #050812;
-            --surface: rgba(10, 14, 39, 0.7);
-            --surface-solid: rgba(15, 20, 50, 0.95);
+            --gold: #f0b429;
+            --dark: #04080f;
+            --darker: #02040a;
+            --surface: rgba(10, 14, 39, 0.8);
             --border: rgba(0, 255, 136, 0.2);
-            --glow: rgba(0, 255, 136, 0.4);
-            --text: #f0f8ff;
-            --text-dim: #a0b0ff;
+            --text: #e8f0fe;
+            --text-dim: #8fa6cc;
             --font-header: 'Orbitron', sans-serif;
             --font-main: 'Space Mono', monospace;
-            --font-accent: 'Audiowide', cursive;
+            --font-syne: 'Syne', sans-serif;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: var(--font-main);
-            background: linear-gradient(135deg, var(--darker) 0%, #1a0033 50%, var(--dark) 100%);
+            background: var(--darker);
             color: var(--text);
             overflow-x: hidden;
             min-height: 100vh;
-            position: relative;
         }
 
-        /* ─── ANIMATED BACKGROUND ─── */
-        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; opacity: 0.5; }
-        #particle-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-
-        /* ─── GLITCH EFFECT ─── */
-        @keyframes glitch {
-            0% { clip-path: inset(40% 0 61% 0); transform: translate(-2px, -2px); }
-            20% { clip-path: inset(92% 0 1% 0); transform: translate(2px, 2px); }
-            40% { clip-path: inset(43% 0 1% 0); transform: translate(-2px, 2px); }
-            60% { clip-path: inset(25% 0 58% 0); transform: translate(2px, -2px); }
-            80% { clip-path: inset(54% 0 7% 0); transform: translate(-2px, -2px); }
-            100% { clip-path: inset(58% 0 43% 0); transform: translate(2px, 2px); }
-        }
-
-        @keyframes neon-glow {
-            0%, 100% { text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary), 0 0 30px var(--secondary); }
-            50% { text-shadow: 0 0 20px var(--primary), 0 0 40px var(--secondary), 0 0 60px var(--tertiary); }
-        }
-
-        @keyframes float { 
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes pulse-border {
-            0%, 100% { border-color: var(--primary); box-shadow: 0 0 10px var(--glow); }
-            50% { border-color: var(--secondary); box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); }
-        }
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.3; pointer-events: none; }
 
         /* ─── HEADER ─── */
         .nav-header {
-            position: fixed; top: 0; width: 100%; padding: 1.5rem 2rem;
+            position: fixed; top: 0; width: 100%; padding: 1rem 2rem;
             display: flex; justify-content: space-between; align-items: center;
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-bottom: 2px solid var(--primary);
-            z-index: 1000;
-            background: rgba(5, 8, 18, 0.9);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            backdrop-filter: blur(20px); border-bottom: 2px solid var(--primary);
+            z-index: 1000; background: rgba(4, 8, 15, 0.9);
         }
 
-        .brand {
-            font-family: var(--font-header);
-            font-size: 1.5rem;
-            font-weight: 900;
-            letter-spacing: 0.1em;
-            animation: neon-glow 3s infinite;
-        }
-
+        .brand { font-family: var(--font-header); font-weight: 900; font-size: 1.2rem; letter-spacing: 0.1em; }
         .brand span { color: var(--secondary); }
 
-        /* ─── MAIN LAYOUT ─── */
+        /* ─── APP SHELL ─── */
         .app-shell {
-            max-width: 1600px; margin: 100px auto 0; padding: 2rem;
-            display: grid; grid-template-columns: 300px 1fr; gap: 3rem;
+            max-width: 1400px; margin: 80px auto 0; padding: 2rem;
+            display: grid; grid-template-columns: 280px 1fr; gap: 3rem;
         }
 
         @media (max-width: 1024px) {
-            .app-shell { grid-template-columns: 1fr; margin-top: 80px; padding: 1rem; }
+            .app-shell { grid-template-columns: 1fr; margin-top: 70px; padding: 1rem; }
             .sidebar { display: none; }
-            .mobile-nav { display: flex; }
         }
 
         /* ─── SIDEBAR ─── */
-        .sidebar {
-            position: sticky; top: 120px; height: calc(100vh - 150px);
-            display: flex; flex-direction: column; gap: 1rem;
-        }
-
-        .menu-list { list-style: none; }
-
+        .sidebar { position: sticky; top: 100px; height: calc(100vh - 120px); display: flex; flex-direction: column; gap: 1rem; }
         .menu-item {
-            padding: 14px 20px; border-radius: 12px; margin-bottom: 6px;
-            cursor: pointer; transition: all 0.3s;
-            display: flex; align-items: center; gap: 12px;
-            font-weight: 700; font-size: 0.95rem;
-            color: var(--text-dim);
-            border: 2px solid transparent;
-            background: var(--surface);
-            position: relative;
-            overflow: hidden;
+            padding: 12px 18px; border-radius: 12px; margin-bottom: 5px;
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 12px;
+            font-weight: 700; font-size: 0.9rem; color: var(--text-dim); background: var(--surface);
+            border: 1px solid transparent;
         }
+        .menu-item:hover, .menu-item.active { color: var(--primary); border-color: var(--primary); background: rgba(0, 255, 136, 0.05); }
+        .menu-item.active { border-color: var(--secondary); color: var(--text); background: rgba(255, 0, 255, 0.05); }
 
-        .menu-item::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, var(--glow), transparent);
-            transition: left 0.5s;
+        /* ─── TOKEN METER ─── */
+        .token-card {
+            background: var(--surface); border: 2px solid var(--gold); border-radius: 16px; padding: 1.5rem;
+            margin-top: auto; position: relative; overflow: hidden;
         }
-
-        .menu-item:hover::before { left: 100%; }
-        .menu-item:hover { color: var(--primary); border-color: var(--primary); transform: translateX(5px); }
-        .menu-item.active { color: var(--text); border-color: var(--secondary); background: rgba(255, 0, 255, 0.1); }
+        .token-label { font-size: 0.7rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px; display: block; }
+        .token-count { font-family: var(--font-header); font-size: 1.8rem; font-weight: 900; color: var(--text); }
+        .token-bar-wrap { height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin-top: 10px; overflow: hidden; }
+        .token-bar { height: 100%; width: 100%; background: linear-gradient(90deg, var(--gold), var(--primary)); transition: 0.5s; }
 
         /* ─── PANELS ─── */
-        .panel { display: none; animation: fadeIn 0.6s ease forwards; }
+        .panel { display: none; animation: fadeIn 0.5s ease forwards; }
         .panel.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ─── HERO SECTION ─── */
-        .hero-title {
-            font-family: var(--font-header);
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            font-weight: 900;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-            margin-bottom: 1.5rem;
-            animation: neon-glow 4s infinite;
+        /* ─── HERO ─── */
+        .hero-title { font-family: var(--font-syne); font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 800; line-height: 1; letter-spacing: -0.04em; margin-bottom: 1.5rem; }
+        .hero-title span { background: linear-gradient(90deg, var(--primary), var(--tertiary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* ─── MENTOR MESSAGE ─── */
+        .mentor-box {
+            background: rgba(240, 180, 41, 0.05); border: 1px solid var(--gold); border-radius: 16px;
+            padding: 1.5rem; display: flex; gap: 1.5rem; align-items: flex-start; margin-bottom: 2rem;
         }
+        .mentor-avatar { width: 50px; height: 50px; border-radius: 12px; background: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; box-shadow: 0 0 15px rgba(240, 180, 41, 0.4); }
+        .mentor-content h4 { font-family: var(--font-header); font-size: 0.8rem; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; }
+        .mentor-content p { font-size: 0.9rem; color: var(--text); line-height: 1.6; }
 
-        .hero-title span { color: var(--secondary); }
+        /* ─── STUDIO ─── */
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; margin-bottom: 1.5rem; position: relative; }
+        .card:hover { border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 255, 136, 0.1); }
+        .badge { font-size: 0.7rem; padding: 4px 12px; border-radius: 100px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--primary); color: var(--primary); text-transform: uppercase; font-weight: 700; margin-bottom: 1rem; display: inline-block; }
 
-        .hero-subtitle {
-            font-size: 1.1rem;
-            color: var(--text-dim);
-            max-width: 700px;
-            margin-bottom: 2.5rem;
-            line-height: 1.8;
-        }
+        .field { margin-bottom: 1.5rem; }
+        .field label { display: block; font-size: 0.75rem; color: var(--primary); text-transform: uppercase; margin-bottom: 8px; font-weight: 700; }
+        textarea, input, select { width: 100%; background: #02040a; border: 1px solid var(--border); padding: 14px; border-radius: 10px; color: var(--text); font-family: var(--font-main); font-size: 0.9rem; }
+        textarea:focus { border-color: var(--secondary); outline: none; }
 
-        /* ─── CARDS ─── */
-        .card {
-            background: var(--surface-solid);
-            border: 2px solid var(--primary);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
+        .btn-main { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #000; border: none; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; transition: 0.3s; text-transform: uppercase; font-family: var(--font-header); font-size: 0.9rem; }
+        .btn-main:hover { transform: scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 136, 0.4); }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
-            animation: float 6s ease-in-out infinite;
-        }
+        /* ─── ACADEMY ─── */
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+        .video-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: 0.3s; }
+        .video-card:hover { border-color: var(--secondary); transform: translateY(-5px); }
+        .video-thumb { aspect-ratio: 16/9; background: #000; position: relative; overflow: hidden; }
+        .video-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s; }
+        .video-card:hover img { opacity: 1; }
+        .video-info { padding: 1.25rem; }
+        .video-info h4 { font-family: var(--font-header); font-size: 0.9rem; margin-bottom: 8px; color: var(--primary); }
+        .btn-watch { display: block; text-align: center; background: rgba(0, 255, 136, 0.1); color: var(--primary); border: 1px solid var(--primary); padding: 10px; border-radius: 8px; text-decoration: none; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .btn-watch:hover { background: var(--primary); color: #000; }
 
-        .card:hover {
-            border-color: var(--secondary);
-            transform: translateY(-8px);
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.3), inset 0 0 20px rgba(0, 255, 136, 0.05);
-        }
+        /* ─── MISSIONS ─── */
+        .mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .mission-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem; cursor: pointer; transition: 0.3s; }
+        .mission-card:hover { border-color: var(--gold); background: rgba(240, 180, 41, 0.05); }
+        .mission-card h4 { font-family: var(--font-header); font-size: 0.8rem; color: var(--gold); margin-bottom: 5px; }
+        .mission-card p { font-size: 0.8rem; color: var(--text-dim); }
 
-        .card h2, .card h3, .card h4 {
-            font-family: var(--font-header);
-            position: relative;
-            z-index: 1;
-        }
-
-        .badge {
-            display: inline-block;
-            font-family: var(--font-header);
-            font-size: 0.7rem;
-            padding: 6px 14px;
-            border-radius: 100px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: 0.1em;
-        }
-
-        /* ─── FORM ELEMENTS ─── */
-        .field { margin-bottom: 1.5rem; position: relative; z-index: 1; }
-        .field label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--primary);
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            letter-spacing: 0.1em;
-        }
-
-        textarea, input, select {
-            width: 100%;
-            background: rgba(5, 8, 18, 0.8);
-            border: 2px solid var(--primary);
-            padding: 14px;
-            border-radius: 10px;
-            color: var(--text);
-            font-family: var(--font-main);
-            font-size: 0.95rem;
-            transition: all 0.3s;
-        }
-
-        textarea:focus, input:focus, select:focus {
-            outline: none;
-            border-color: var(--secondary);
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
-            background: rgba(5, 8, 18, 0.95);
-        }
-
-        /* ─── BUTTONS ─── */
-        .btn-action {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--darker);
-            border: none;
-            padding: 16px;
-            border-radius: 12px;
-            font-weight: 800;
-            font-family: var(--font-header);
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.4s;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-action::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: left 0.5s;
-        }
-
-        .btn-action:hover::before { left: 100%; }
-        .btn-action:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 255, 136, 0.5); }
-
-        /* ─── VIDEO GRID ─── */
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .video-card {
-            background: var(--surface-solid);
-            border: 2px solid var(--primary);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.4s;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .video-card:hover {
-            border-color: var(--secondary);
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.4);
-        }
-
-        .video-thumb {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: linear-gradient(135deg, #1a0033, #0a0e27);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .video-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.8;
-            transition: all 0.4s;
-        }
-
-        .video-card:hover .video-thumb img { opacity: 1; filter: brightness(1.2); }
-
-        .play-icon {
-            position: absolute;
-            font-size: 3rem;
-            color: var(--primary);
-            opacity: 0.8;
-            transition: all 0.3s;
-            filter: drop-shadow(0 0 10px var(--primary));
-        }
-
-        .video-card:hover .play-icon { opacity: 1; transform: scale(1.2); }
-
-        .video-info {
-            padding: 1.25rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .video-info h4 {
-            font-family: var(--font-header);
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
-            color: var(--primary);
-        }
-
-        .video-info p {
-            font-size: 0.8rem;
-            color: var(--text-dim);
-            margin-bottom: 0.75rem;
-        }
-
-        .btn-video {
-            display: block;
-            text-align: center;
-            background: rgba(0, 255, 136, 0.1);
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 10px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: 700;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .btn-video:hover {
-            background: var(--primary);
-            color: var(--darker);
-            box-shadow: 0 0 15px var(--glow);
-        }
-
-        /* ─── OUTPUT BOX ─── */
-        .output-box {
-            background: rgba(5, 8, 18, 0.95);
-            border: 2px dashed var(--secondary);
-            padding: 1.5rem;
-            border-radius: 12px;
-            font-family: var(--font-main);
-            font-size: 0.85rem;
-            color: var(--primary);
-            position: relative;
-            margin-top: 1.5rem;
-            white-space: pre-wrap;
-            word-break: break-word;
-            animation: pulse-border 2s infinite;
-        }
-
-        .copy-tag {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 0.65rem;
-            background: var(--primary);
-            color: var(--darker);
-            padding: 4px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: all 0.3s;
-        }
-
-        .copy-tag:hover { background: var(--secondary); }
-
-        /* ─── EXPERT TIPS ─── */
-        .tips-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-top: 1.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .tip-box {
-            background: rgba(0, 255, 136, 0.05);
-            border: 1px solid var(--primary);
-            padding: 1.25rem;
-            border-radius: 12px;
-            transition: all 0.3s;
-        }
-
-        .tip-box:hover {
-            border-color: var(--secondary);
-            background: rgba(255, 0, 255, 0.05);
-            transform: translateY(-4px);
-        }
-
-        .tip-box h5 {
-            color: var(--primary);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            font-family: var(--font-header);
-        }
-
-        .tip-box p {
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            line-height: 1.6;
-        }
-
-        /* ─── MOBILE NAV ─── */
-        .mobile-nav {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(5, 8, 18, 0.95);
-            border-top: 2px solid var(--primary);
-            padding: 0.8rem;
-            justify-content: space-around;
-            z-index: 1000;
-        }
-
-        .nav-icon {
-            font-size: 1.5rem;
-            opacity: 0.5;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .nav-icon:hover, .nav-icon.active { opacity: 1; color: var(--primary); text-shadow: 0 0 10px var(--glow); }
+        .output-box { background: #000; border: 2px dashed var(--secondary); padding: 1.5rem; border-radius: 12px; font-family: var(--font-main); font-size: 0.85rem; color: var(--primary); position: relative; margin-top: 1.5rem; white-space: pre-wrap; }
+        .copy-btn { position: absolute; top: 10px; right: 10px; font-size: 0.6rem; background: var(--primary); color: #000; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: 700; }
 
     </style>
 </head>
 <body>
     <canvas id="bg-canvas"></canvas>
-    <div id="particle-bg"></div>
 
     <header class="nav-header">
         <div class="brand">SONIC <span>ARCHITECT</span></div>
         <div style="display: flex; gap: 1rem; align-items: center;">
-            <div id="status-dot" style="width: 10px; height: 10px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 15px var(--primary); animation: pulse 2s infinite;"></div>
-            <span style="font-family: var(--font-header); font-size: 0.75rem; color: var(--primary); text-transform: uppercase;">v6.0 ONLINE</span>
+            <div id="status-dot" style="width: 10px; height: 10px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 15px var(--primary);"></div>
+            <span style="font-family: var(--font-header); font-size: 0.75rem; color: var(--primary);">MENTOR v7.0 ONLINE</span>
         </div>
     </header>
 
     <div class="app-shell">
         <aside class="sidebar">
             <ul class="menu-list">
-                <li class="menu-item active" onclick="switchTab('home', this)"><span>🎵</span> Home</li>
+                <li class="menu-item active" onclick="switchTab('home', this)"><span>🏠</span> Intelligence Hub</li>
                 <li class="menu-item" onclick="switchTab('studio', this)"><span>🎛️</span> Neural Studio</li>
-                <li class="menu-item" onclick="switchTab('academy', this)"><span>🎓</span> Academy</li>
-                <li class="menu-item" onclick="switchTab('max', this)"><span>⚡</span> Max Mode</li>
-                <li class="menu-item" onclick="switchTab('expert', this)"><span>🧠</span> Expert Tips</li>
+                <li class="menu-item" onclick="switchTab('academy', this)"><span>🎓</span> Sonic Academy</li>
+                <li class="menu-item" onclick="switchTab('missions', this)"><span>🎯</span> Missions & XP</li>
+                <li class="menu-item" onclick="switchTab('max', this)"><span>⚡</span> Max Precision</li>
             </ul>
-            <div style="margin-top: auto; padding: 1.5rem; background: var(--surface); border: 2px solid var(--primary); border-radius: 12px; text-align: center;">
-                <p style="font-size: 0.65rem; color: var(--primary); text-transform: uppercase; margin-bottom: 8px;">Credits Available</p>
-                <div id="credits" style="font-family: var(--font-header); font-size: 1.8rem; font-weight: 900; color: var(--secondary);">100</div>
+
+            <div class="token-card">
+                <span class="token-label">Neural Credits</span>
+                <div class="token-count" id="credits">10,000</div>
+                <div class="token-bar-wrap">
+                    <div class="token-bar" id="credit-bar"></div>
+                </div>
+                <p style="font-size: 0.6rem; color: var(--text-dim); margin-top: 8px; text-transform: uppercase;">Optimization Load: <span id="load-pct">100%</span></p>
             </div>
         </aside>
 
         <main>
             <!-- HOME -->
             <div id="tab-home" class="panel active">
-                <h1 class="hero-title">Construye el Futuro del <span>Audio Neural.</span></h1>
-                <p class="hero-subtitle">
-                    Bienvenido a **SONIC ARCHITECT**. No es solo un generador de prompts; es un entorno de ingeniería sonora diseñado para músicos que buscan dominar Suno AI con precisión quirúrgica.
-                </p>
+                <h1 class="hero-title">Arquitecto Sonoro: <span>Mentor Edition.</span></h1>
+                
+                <div class="mentor-box">
+                    <div class="mentor-avatar">🧠</div>
+                    <div class="mentor-content">
+                        <h4>Suno Mentor Protocol v1.0</h4>
+                        <p id="mentor-intro">"Suno no es una caja negra, es un instrumento de precisión. No generes por azar; arquitecturiza por diseño. Tienes 10,000 créditos neurales. Úsalos con sabiduría para dominar la estocasticidad del motor."</p>
+                    </div>
+                </div>
 
                 <div class="card">
-                    <div class="badge">⚡ Sistema Inteligente</div>
-                    <h3 style="margin-bottom: 1rem;">La Revolución del Audio IA</h3>
-                    <p style="color: var(--text-dim); line-height: 1.8;">
-                        Suno no es una caja negra. Es un instrumento que responde a arquitecturas sonoras precisas. Aquí aprendes a traducir emociones en parámetros técnicos, a dominar la estocasticidad neural y a generar hits de nivel comercial.
+                    <div class="badge">Estrategia de Optimización</div>
+                    <h3>Lógica Multi-IA: El Workflow del Experto</h3>
+                    <p style="color: var(--text-dim); line-height: 1.7; margin-top: 1rem;">
+                        1. **Ideación (ChatGPT/Claude)**: Define la narrativa y la emoción pura.<br>
+                        2. **Arquitectura (Sonic Architect)**: Traduce esa visión en parámetros técnicos de Suno.<br>
+                        3. **Inyección (Max Mode)**: Fuerza la fidelidad del motor neural.<br>
+                        4. **Iteración (Estadística)**: Evalúa patrones en 4-6 variaciones, no en una sola.
                     </p>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                    <div class="card">
-                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">17 Masterclasses</h4>
-                        <p style="font-size: 0.9rem; color: var(--text-dim);">Videos indexados para dominar cada rincón del motor neural.</p>
+                <div class="mission-grid">
+                    <div class="mission-card" onclick="switchTab('missions', this)">
+                        <h4>Misión 01: Identidad Vocal</h4>
+                        <p>Domina la consistencia vocal en múltiples tracks.</p>
                     </div>
-                    <div class="card">
-                        <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">100 Créditos</h4>
-                        <p style="font-size: 0.9rem; color: var(--text-dim);">Optimizaciones ilimitadas para perfeccionar tus prompts.</p>
+                    <div class="mission-card" onclick="switchTab('missions', this)">
+                        <h4>Misión 02: High Fidelity</h4>
+                        <p>Inyecta códigos para forzar calidad de estudio.</p>
                     </div>
                 </div>
             </div>
@@ -520,155 +202,142 @@
             <!-- STUDIO -->
             <div id="tab-studio" class="panel">
                 <div class="card">
-                    <div class="badge">🎛️ Neural Translator</div>
-                    <h2 style="margin-bottom: 0.5rem;">Neural Studio Copilot</h2>
-                    <p style="color: var(--text-dim); margin-bottom: 2rem;">Convierte visiones artísticas en arquitecturas sonoras optimizadas.</p>
+                    <div class="badge">Neural Translator Pro</div>
+                    <h2>Neural Studio Copilot</h2>
+                    <p style="color: var(--text-dim); margin-bottom: 2rem;">Traducción de visiones artísticas a arquitecturas de datos de Suno.</p>
 
                     <div class="field">
-                        <label>🎨 Visión Artística / Emoción</label>
-                        <textarea id="vision" rows="3" placeholder="ej: Una odisea espacial melancólica con sintetizadores analógicos y una voz etérea..."></textarea>
+                        <label>Visión Artística (Desde tu IA de Ideación)</label>
+                        <textarea id="vision" rows="3" placeholder="ej: Una odisea espacial melancólica con sintetizadores analógicos..."></textarea>
                     </div>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div class="field">
-                            <label>🎵 Género Base</label>
-                            <input type="text" id="genre" placeholder="ej: Synthwave, Cinematic, Lo-fi...">
+                            <label>Arquitectura de Género</label>
+                            <input type="text" id="genre" placeholder="ej: Synthwave, Cinematic...">
                         </div>
                         <div class="field">
-                            <label>🎤 Configuración Vocal</label>
-                            <select id="vocal">
-                                <option value="ethereal female, reverb-drenched, emotional">Femenina Etérea</option>
-                                <option value="gritty male, close-mic, intimate, warm">Masculina Íntima</option>
-                                <option value="robotic vocoder, neural processed, futuristic">Procesado Neural</option>
-                                <option value="pure instrumental, no vocals, symphonic">Instrumental Puro</option>
+                            <label>Objetivo de Producción</label>
+                            <select id="goal">
+                                <option value="demo">Demo Rápida (Bajo Consumo)</option>
+                                <option value="studio">Calidad de Estudio (Alta Fidelidad)</option>
+                                <option value="viral">Viral Hit (Energía Máxima)</option>
+                                <option value="experimental">Experimental (Fusión Neural)</option>
                             </select>
                         </div>
                     </div>
 
-                    <button class="btn-action" onclick="architectPrompt()">
-                        ✦ Arquitecturar Sonido (10 Créditos)
+                    <button class="btn-main" onclick="architectPrompt()">
+                        ✦ Arquitecturar Prompt (500 Credits)
                     </button>
 
                     <div id="studio-out" class="output-box" style="display: none;">
-                        <div class="copy-tag" onclick="copyStudio()">COPIAR</div>
+                        <div class="copy-btn" onclick="copyStudio()">COPIAR</div>
                         <span id="out-text"></span>
                     </div>
 
-                    <div class="tips-grid">
-                        <div class="tip-box">
-                            <h5>💡 Tip: Objetivo Primero</h5>
-                            <p>Define si buscas demo rápida, base para producción o producto final. El objetivo cambia toda la arquitectura.</p>
-                        </div>
-                        <div class="tip-box">
-                            <h5>🎲 Tip: Estocasticidad</h5>
-                            <p>No juzgues por un resultado. Evalúa patrones en 4-6 variaciones. La diferencia es probabilidad, no error.</p>
-                        </div>
-                        <div class="tip-box">
-                            <h5>⚙️ Tip: Menos es Más</h5>
-                            <p>Demasiados tags confunden. Prioriza: 1) Respetar, 2) Cambiar, 3) Evitar. Ese orden produce mejores resultados.</p>
-                        </div>
+                    <div style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+                        <h4 style="font-family: var(--font-header); font-size: 0.75rem; color: var(--gold); text-transform: uppercase; margin-bottom: 1rem;">Mentor Tips:</h4>
+                        <ul style="font-size: 0.85rem; color: var(--text-dim); list-style: none;">
+                            <li style="margin-bottom: 8px;">• **Prioridad 1**: Qué debe respetar el motor.</li>
+                            <li style="margin-bottom: 8px;">• **Prioridad 2**: Qué debe cambiar o evolucionar.</li>
+                            <li style="margin-bottom: 8px;">• **Prioridad 3**: Qué errores debe evitar a toda costa.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
             <!-- ACADEMY -->
             <div id="tab-academy" class="panel">
-                <div class="badge">🎓 Formación de Élite</div>
-                <h2 style="margin-bottom: 2rem;">Sonic Academy — 17 Módulos Críticos</h2>
-                <div class="video-grid" id="video-grid">
-                    <!-- Videos will be injected here -->
+                <div class="badge">Masterclasses</div>
+                <h2 style="margin-bottom: 2rem;">Sonic Academy — 17 Módulos de Élite</h2>
+                <div class="video-grid" id="video-grid"></div>
+            </div>
+
+            <!-- MISSIONS -->
+            <div id="tab-missions" class="panel">
+                <div class="card">
+                    <div class="badge">Progreso de Usuario</div>
+                    <h2>Misiones de Arquitecto</h2>
+                    <div class="mission-grid" style="margin-top: 1.5rem;">
+                        <div class="card" style="border-color: var(--primary);">
+                            <h4>Nivel 01: Aprendiz Neural</h4>
+                            <p style="font-size: 0.8rem; color: var(--text-dim);">Completa 5 arquitecturas básicas.</p>
+                            <div class="token-bar-wrap" style="height: 4px;"><div class="token-bar" style="width: 60%;"></div></div>
+                        </div>
+                        <div class="card" style="border-color: var(--secondary);">
+                            <h4>Nivel 02: Ingeniero de Estilo</h4>
+                            <p style="font-size: 0.8rem; color: var(--text-dim);">Domina el uso de Max Injections.</p>
+                            <div class="token-bar-wrap" style="height: 4px;"><div class="token-bar" style="width: 20%;"></div></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- MAX MODE -->
             <div id="tab-max" class="panel">
                 <div class="card" style="border-color: var(--secondary);">
-                    <div class="badge" style="background: rgba(255, 0, 255, 0.1); border-color: var(--secondary); color: var(--secondary);">⚡ High Fidelity</div>
-                    <h2 style="margin-bottom: 0.5rem;">Max Precision Injections</h2>
-                    <p style="color: var(--text-dim); margin-bottom: 2rem;">Inyectores de metadatos para forzar máxima calidad y fidelidad de estudio.</p>
-                    
-                    <div class="output-box" style="border-color: var(--secondary); color: var(--secondary);">
+                    <div class="badge" style="background: rgba(255, 0, 255, 0.1); color: var(--secondary);">⚡ Max Precision</div>
+                    <h2>Inyectores de Metadatos</h2>
+                    <p style="color: var(--text-dim); margin-bottom: 1.5rem;">Forzar al motor neural a ignorar compresiones y priorizar la fidelidad de estudio.</p>
+                    <div class="output-box" style="color: var(--secondary); border-color: var(--secondary);">
 [Style: Max Quality, Ultra Fidelity, Studio Grade]
 [Engine: Force Neural Precision]
 is mode max | quality max max | realins max max
                     </div>
-                    <button class="btn-action" style="background: linear-gradient(135deg, var(--secondary), var(--primary));" onclick="copyRaw('is mode max | quality max max | realins max max')">Copiar Inyectores (5 Créditos)</button>
-                </div>
-            </div>
-
-            <!-- EXPERT TIPS -->
-            <div id="tab-expert" class="panel">
-                <div class="card">
-                    <div class="badge">🧠 Lógica de Experto</div>
-                    <h2 style="margin-bottom: 2rem;">Principios del Sonic Architect</h2>
-                    
-                    <div style="display: grid; gap: 1.5rem;">
-                        <div style="border-left: 3px solid var(--primary); padding-left: 1.5rem;">
-                            <h4 style="color: var(--primary); margin-bottom: 0.5rem;">01. El Objetivo Manda</h4>
-                            <p style="color: var(--text-dim);">No generes por azar. Define si buscas una demo rápida, una base para producción o un producto final. La arquitectura cambia según el fin.</p>
-                        </div>
-                        <div style="border-left: 3px solid var(--secondary); padding-left: 1.5rem;">
-                            <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">02. Estocasticidad Controlada</h4>
-                            <p style="color: var(--text-dim);">Suno es probabilístico. No juzgues un prompt por un resultado. Evalúa patrones en 4-6 variaciones. La consistencia emerge del análisis estadístico.</p>
-                        </div>
-                        <div style="border-left: 3px solid var(--tertiary); padding-left: 1.5rem;">
-                            <h4 style="color: var(--tertiary); margin-bottom: 0.5rem;">03. Arquitectura Precisa</h4>
-                            <p style="color: var(--text-dim);">Menos es más. Demasiados tags confunden. Prioriza: 1) Qué debe respetar, 2) Qué debe cambiar, 3) Qué no debe hacer. Ese orden produce resultados notablemente mejores.</p>
-                        </div>
-                        <div style="border-left: 3px solid var(--primary); padding-left: 1.5rem;">
-                            <h4 style="color: var(--primary); margin-bottom: 0.5rem;">04. Laboratorio, No Destino</h4>
-                            <p style="color: var(--text-dim);">Suno es maquetero + ideador + laboratorio. El mayor valor no siempre está en el resultado final, sino en descubrir estructuras, voces y fusiones que luego reharás mejor fuera de Suno.</p>
-                        </div>
-                    </div>
+                    <button class="btn-main" style="background: var(--secondary);" onclick="copyRaw('is mode max | quality max max | realins max max', 1000)">Inyectar Códigos (1,000 Credits)</button>
                 </div>
             </div>
         </main>
     </div>
 
-    <nav class="mobile-nav">
-        <div class="nav-icon active" onclick="switchTab('home', this)">🎵</div>
-        <div class="nav-icon" onclick="switchTab('studio', this)">🎛️</div>
-        <div class="nav-icon" onclick="switchTab('academy', this)">🎓</div>
-        <div class="nav-icon" onclick="switchTab('max', this)">⚡</div>
-    </nav>
-
     <script>
         const VIDEOS = [
-            { title: "Dominio de Prompts: Estructura Real", id: "zVzsVOoIfLY", t: "10s", desc: "Aprende la estructura correcta" },
-            { title: "Flujo de Trabajo Profesional", id: "lZQ9gF-f9E0", t: "14s", desc: "Optimiza tu pipeline creativo" },
-            { title: "Ingeniería de Estilo Avanzada", id: "3nL2aWNXJQw", t: "823s", desc: "Controla cada parámetro sonoro" },
-            { title: "Secretos del Max Mode", id: "XjmaO4ixy5Y", t: "5s", desc: "Fuerza la máxima fidelidad" },
-            { title: "Consistencia Vocal Neural", id: "R3yMFYua2wg", t: "0s", desc: "Mantén tu identidad vocal" },
-            { title: "Mezcla y Masterización IA", id: "-MMYt8zi9e0", t: "7s", desc: "Calidad de estudio profesional" },
-            { title: "Diseño de Instrumentos Reales", id: "f2msbSVOO1U", t: "8s", desc: "Instrumentación auténtica" },
-            { title: "Arquitectura de Letras y Flow", id: "DIToC1PVXJE", t: "6s", desc: "Composición lírica perfecta" },
-            { title: "Neural Copilot: Guía de Uso", id: "icQDqvlIj-A", t: "12s", desc: "Domina el chat inteligente" },
-            { title: "Estrategias de Hit Viral", id: "r60dTNcZntE", t: "6s", desc: "Fórmulas para éxito comercial" },
-            { title: "Masterclass: El Futuro del Audio", id: "iytq802OFLo", t: "0s", desc: "Visión futurista del audio IA" },
-            { title: "Suno Sonic Lab v4.5", id: "j6vYBqwDiuE", t: "516s", desc: "Plataforma completa explicada" },
-            { title: "Técnicas Avanzadas Parte 1", id: "duUTZlGrdds", t: "0s", desc: "Métodos profesionales nivel experto" },
-            { title: "Producción de Beats Dinámicos", id: "FwyTrsER0dw", t: "0s", desc: "Ritmo y groove perfecto" },
-            { title: "Síntesis Neural Profunda", id: "cLLXH1IfvwE", t: "1s", desc: "Comprende el motor de síntesis" },
-            { title: "Optimización de Parámetros", id: "CW-nUwyj6Ow", t: "0s", desc: "Ajustes micro para macro resultados" },
-            { title: "Integración Workflow Profesional", id: "IN_m5KAoSy4", t: "0s", desc: "Pipeline de producción real" }
+            { title: "Estructura Real de Prompts", id: "zVzsVOoIfLY", t: "10s" },
+            { title: "Workflow Profesional", id: "lZQ9gF-f9E0", t: "14s" },
+            { title: "Ingeniería de Estilo", id: "3nL2aWNXJQw", t: "823s" },
+            { title: "Secretos Max Mode", id: "XjmaO4ixy5Y", t: "5s" },
+            { title: "Consistencia Vocal", id: "R3yMFYua2wg", t: "0s" },
+            { title: "Mezcla IA Pro", id: "-MMYt8zi9e0", t: "7s" },
+            { title: "Diseño de Instrumentos", id: "f2msbSVOO1U", t: "8s" },
+            { title: "Arquitectura de Letras", id: "DIToC1PVXJE", t: "6s" },
+            { title: "Neural Copilot Guía", id: "icQDqvlIj-A", t: "12s" },
+            { title: "Estrategias Viral Hit", id: "r60dTNcZntE", t: "6s" },
+            { title: "Masterclass Futuro", id: "iytq802OFLo", t: "0s" },
+            { title: "Suno Sonic Lab v4.5", id: "j6vYBqwDiuE", t: "516s" },
+            { title: "Técnicas Expertas 1", id: "duUTZlGrdds", t: "0s" },
+            { title: "Beats Dinámicos", id: "FwyTrsER0dw", t: "0s" },
+            { title: "Síntesis Neural", id: "cLLXH1IfvwE", t: "1s" },
+            { title: "Optimización Micro", id: "CW-nUwyj6Ow", t: "0s" },
+            { title: "Workflow Pipeline", id: "IN_m5KAoSy4", t: "0s" }
         ];
 
-        let credits = 100;
+        let credits = 10000;
+        const maxCredits = 10000;
+
+        function updateCredits(amount) {
+            credits = Math.max(0, credits - amount);
+            document.getElementById('credits').textContent = credits.toLocaleString();
+            const pct = (credits / maxCredits) * 100;
+            document.getElementById('credit-bar').style.width = pct + '%';
+            document.getElementById('load-pct').textContent = Math.round(pct) + '%';
+            
+            if (pct < 20) {
+                document.getElementById('credit-bar').style.background = 'var(--secondary)';
+                document.getElementById('credits').style.color = 'var(--secondary)';
+            }
+        }
 
         function initVideos() {
             const grid = document.getElementById('video-grid');
-            VIDEOS.forEach((v, idx) => {
+            VIDEOS.forEach(v => {
                 const card = document.createElement('div');
                 card.className = 'video-card';
                 card.innerHTML = `
-                    <div class="video-thumb">
-                        <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="${v.title}">
-                        <div class="play-icon">▶</div>
-                    </div>
+                    <div class="video-thumb"><img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg"></div>
                     <div class="video-info">
                         <h4>${v.title}</h4>
-                        <p>${v.desc}</p>
-                        <a href="https://www.youtube.com/watch?v=${v.id}&t=${v.t}" target="_blank" class="btn-video">Mejorar con este módulo</a>
+                        <a href="https://www.youtube.com/watch?v=${v.id}&t=${v.t}" target="_blank" class="btn-watch">Estudiar Módulo</a>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -678,45 +347,41 @@ is mode max | quality max max | realins max max
         function switchTab(id, el) {
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
             document.getElementById('tab-' + id).classList.add('active');
-            document.querySelectorAll('.menu-item, .nav-icon').forEach(item => item.classList.remove('active'));
-            el.classList.add('active');
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            if (el && el.classList.contains('menu-item')) el.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function architectPrompt() {
-            if (credits < 10) { alert("Créditos insuficientes. Necesitas 10 créditos."); return; }
+            if (credits < 500) { alert("Créditos insuficientes para optimización profunda."); return; }
             
             const vision = document.getElementById('vision').value || "Sonic Architecture";
             const genre = document.getElementById('genre').value || "Experimental";
-            const vocal = document.getElementById('vocal').value;
+            const goal = document.getElementById('goal').value;
             
-            let technical = `[Architecture: High Fidelity, Professional Studio Mix]\n`;
-            technical += `[Style: ${genre}, ${vocal}]\n`;
-            technical += `[Structure: Dynamic Range, Professional Mastering]\n`;
-            technical += `[Neural Intent: ${vision}]\n`;
-            technical += `[Quality: Max Precision, Ultra Fidelity]`;
+            let architecture = `[Architecture: ${goal.toUpperCase()} PRESET]\n`;
+            architecture += `[Style: ${genre}, High-Fidelity, Professional Mix]\n`;
+            architecture += `[Neural Intent: ${vision}]\n`;
+            architecture += `[Optimization: Multi-IA Enhanced Workflow]`;
 
-            document.getElementById('out-text').textContent = technical;
+            document.getElementById('out-text').textContent = architecture;
             document.getElementById('studio-out').style.display = 'block';
-            
-            credits -= 10;
-            document.getElementById('credits').textContent = credits;
+            updateCredits(500);
         }
 
         function copyStudio() {
-            const txt = document.getElementById('out-text').textContent;
-            navigator.clipboard.writeText(txt).then(() => alert("✓ Arquitectura Copiada"));
+            navigator.clipboard.writeText(document.getElementById('out-text').textContent).then(() => alert("✓ Arquitectura Copiada"));
         }
 
-        function copyRaw(txt) {
+        function copyRaw(txt, cost) {
+            if (credits < cost) { alert("Créditos insuficientes."); return; }
             navigator.clipboard.writeText(txt).then(() => {
-                credits -= 5;
-                document.getElementById('credits').textContent = credits;
-                alert("✓ Inyectores Copiados (-5 créditos)");
+                updateCredits(cost);
+                alert("✓ Inyectores Copiados (-" + cost + " Credits)");
             });
         }
 
-        // Canvas BG Animation
+        // Background Animation
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let w, h;
@@ -726,38 +391,15 @@ is mode max | quality max max | realins max max
 
         function draw() {
             ctx.clearRect(0, 0, w, h);
-            ctx.strokeStyle = 'rgba(0, 255, 136, 0.08)';
+            ctx.strokeStyle = 'rgba(0, 255, 136, 0.1)';
             ctx.lineWidth = 1;
-            const step = 100;
-            const offset = (Date.now() / 60) % step;
-            for(let x = offset; x < w; x += step) {
-                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
-            }
-            for(let y = offset; y < h; y += step) {
-                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
-            }
+            const step = 80;
+            const offset = (Date.now() / 50) % step;
+            for(let x = offset; x < w; x += step) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+            for(let y = offset; y < h; y += step) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
             requestAnimationFrame(draw);
         }
         draw();
-
-        // Particle effect
-        const particleBg = document.getElementById('particle-bg');
-        for(let i = 0; i < 30; i++) {
-            const particle = document.createElement('div');
-            particle.style.cssText = `
-                position: absolute;
-                width: ${Math.random() * 3 + 1}px;
-                height: ${Math.random() * 3 + 1}px;
-                background: rgba(0, 255, 136, ${Math.random() * 0.5 + 0.2});
-                border-radius: 50%;
-                left: ${Math.random() * 100}%;
-                top: ${Math.random() * 100}%;
-                animation: float ${Math.random() * 10 + 5}s infinite;
-                box-shadow: 0 0 ${Math.random() * 10 + 5}px rgba(0, 255, 136, 0.5);
-            `;
-            particleBg.appendChild(particle);
-        }
-
         initVideos();
     </script>
 </body>

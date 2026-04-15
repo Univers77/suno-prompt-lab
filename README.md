@@ -1,14 +1,14 @@
-# SONIC ARCHITECT — Neural Audio Copilot v6.0 Cyberpunk Edition
+# SONIC ARCHITECT v7.0 — Mentor Edition (10K Neural Credits)
 
 **Sonic Architect** es la evolución profesional de *Suno Prompt Lab*. Esta plataforma está diseñada para transformar visiones artísticas en realidades sonoras de alta fidelidad utilizando el motor de **Suno AI**.
 
 ## 🚀 Características Principales
 
-- **Neural Studio Copilot**: Traductor inteligente que convierte visiones artísticas en arquitecturas sonoras de alta fidelidad.
-- **Sonic Academy**: 17 masterclasses indexadas para dominar cada aspecto del motor neural de Suno AI.
-- **Max Precision Injections**: Inyectores de metadatos para forzar máxima calidad y fidelidad de estudio.
-- **Expert Logic**: Principios de mentoría profesional para producción musical estratégica.
-- **Cyberpunk Aesthetic**: Interfaz futurista con efectos 3D, animaciones de After Effects y glassmorphism.
+- **Neural Studio Copilot (Mentor v1)**: Sistema de traducción de prompts con lógica de consumo de 10,000 créditos neurales.
+- **Workflow Multi-IA**: Guía integrada para optimizar creaciones usando IAs externas (ChatGPT/Claude) antes de inyectar en Suno.
+- **Sonic Academy (17 Módulos)**: Masterclasses profesionales sobre ingeniería de prompts, mezcla IA y estrategias de hits virales.
+- **Missions & XP**: Sistema de gamificación para aprender a dominar el motor neural de forma progresiva.
+- **Max Precision Injections**: Inyectores de metadatos de alto nivel para forzar fidelidad de estudio profesional.
 
 ## 🎓 Módulos de Aprendizaje
 
