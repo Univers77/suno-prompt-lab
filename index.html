@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>SUNO SONIC LAB — Neural Audio Intelligence</title>
+    <title>SUNO SONIC LAB — Neural Audio Intelligence v4.5</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* DARK THEME (Sonic Deep) */
             --bg: #020205;
             --surface: rgba(255, 255, 255, 0.03);
             --surface-solid: #0a0a12;
@@ -45,68 +44,21 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- BACKGROUND CANVAS --- */
-        #sonic-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.3;
-        }
+        #sonic-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.3; }
 
-        /* --- NAVIGATION --- */
         .nav-header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.25rem 2.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-bottom: 1px solid var(--border);
-            z-index: 1000;
+            position: fixed; top: 0; width: 100%; padding: 1.25rem 2.5rem;
+            display: flex; justify-content: space-between; align-items: center;
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--border); z-index: 1000;
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 800;
-            font-size: 1.1rem;
-            letter-spacing: -0.04em;
-            text-transform: uppercase;
-        }
-
+        .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.1rem; letter-spacing: -0.04em; text-transform: uppercase; }
         .brand span { color: var(--accent); }
 
-        .controls { display: flex; gap: 1rem; align-items: center; }
-
-        .btn-theme {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 8px 18px;
-            border-radius: 100px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: 700;
-            transition: var(--transition);
-        }
-
-        .btn-theme:hover { border-color: var(--accent); background: var(--accent-glow); }
-
-        /* --- MAIN LAYOUT --- */
         .app-shell {
-            max-width: 1400px;
-            margin: 100px auto 0;
-            padding: 0 2.5rem 5rem;
-            display: grid;
-            grid-template-columns: 260px 1fr;
-            gap: 4rem;
+            max-width: 1400px; margin: 100px auto 0; padding: 0 2.5rem 5rem;
+            display: grid; grid-template-columns: 260px 1fr; gap: 4rem;
         }
 
         @media (max-width: 1024px) {
@@ -115,191 +67,52 @@
             .mobile-tabs { display: flex; }
         }
 
-        /* --- SIDEBAR --- */
-        .sidebar {
-            position: sticky;
-            top: 120px;
-            height: calc(100vh - 150px);
-            display: flex;
-            flex-direction: column;
-        }
-
+        .sidebar { position: sticky; top: 120px; height: calc(100vh - 150px); display: flex; flex-direction: column; }
         .menu-list { list-style: none; }
-
         .menu-item {
-            padding: 14px 20px;
-            border-radius: var(--radius);
-            margin-bottom: 6px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-dim);
-            border: 1px solid transparent;
+            padding: 14px 20px; border-radius: var(--radius); margin-bottom: 6px;
+            cursor: pointer; transition: var(--transition); display: flex; align-items: center;
+            gap: 14px; font-weight: 600; font-size: 0.9rem; color: var(--text-dim); border: 1px solid transparent;
         }
+        .menu-item:hover, .menu-item.active { background: var(--surface); color: var(--text); border-color: var(--border); }
+        .menu-item.active { color: var(--accent); background: var(--accent-glow); border-color: var(--accent); }
 
-        .menu-item:hover, .menu-item.active {
-            background: var(--surface);
-            color: var(--text);
-            border-color: var(--border);
-        }
-
-        .menu-item.active {
-            color: var(--accent);
-            background: var(--accent-glow);
-            border-color: var(--accent);
-        }
-
-        .credits-panel {
-            margin-top: auto;
-            background: var(--surface-solid);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .credits-panel label { font-size: 0.65rem; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; }
-        .credits-panel .val { font-family: var(--font-mono); font-size: 1.75rem; font-weight: 700; color: var(--accent); margin-top: 4px; }
-
-        /* --- CONTENT PANELS --- */
         .panel { display: none; animation: panelIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
         .panel.active { display: block; }
+        @keyframes panelIn { from { opacity: 0; transform: translateY(15px); filter: blur(10px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
 
-        @keyframes panelIn {
-            from { opacity: 0; transform: translateY(15px); filter: blur(10px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
-
-        .hero-h1 { font-size: 4.5rem; font-weight: 800; line-height: 0.95; letter-spacing: -0.06em; margin-bottom: 1.5rem; }
-        .hero-p { font-size: 1.25rem; color: var(--text-dim); max-width: 650px; margin-bottom: 3.5rem; line-height: 1.5; }
-
-        .card-pro {
-            background: var(--surface-solid);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            transition: var(--transition);
-        }
-
+        .card-pro { background: var(--surface-solid); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem; margin-bottom: 2rem; transition: var(--transition); }
         .card-pro:hover { border-color: var(--accent); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
 
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; }
         .badge-pro { font-family: var(--font-mono); font-size: 0.65rem; padding: 5px 12px; border-radius: 100px; background: var(--surface); border: 1px solid var(--border); color: var(--accent); text-transform: uppercase; font-weight: 700; }
 
-        /* --- FORM PRO --- */
+        /* --- INPUTS --- */
         .input-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
         .field { display: flex; flex-direction: column; gap: 10px; }
         .field label { font-size: 0.75rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
-        
-        input, select, textarea {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            padding: 16px 20px;
-            border-radius: 14px;
-            color: var(--text);
-            font-family: var(--font-main);
-            font-size: 0.95rem;
-            transition: var(--transition);
-        }
-
+        input, select, textarea { background: var(--bg); border: 1px solid var(--border); padding: 16px 20px; border-radius: 14px; color: var(--text); font-family: var(--font-main); font-size: 0.95rem; transition: var(--transition); }
         input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
 
-        .btn-sonic {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 20px;
-            border-radius: 18px;
-            font-weight: 800;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 2rem;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
+        .btn-sonic { background: var(--accent); color: white; border: none; padding: 20px; border-radius: 18px; font-weight: 800; font-size: 1rem; cursor: pointer; width: 100%; margin-top: 2rem; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
         .btn-sonic:hover { transform: translateY(-3px); box-shadow: 0 15px 40px var(--accent-glow); filter: brightness(1.1); }
 
-        /* --- OUTPUT PRO --- */
-        .output-wrap { margin-top: 2.5rem; position: relative; }
-        .output-box {
-            background: #000;
-            border: 1px solid var(--accent);
-            padding: 2rem;
-            border-radius: 20px;
-            font-family: var(--font-mono);
-            font-size: 0.9rem;
-            color: #c4adff;
-            line-height: 1.8;
-            position: relative;
-            min-height: 120px;
-        }
+        /* --- SONIC TIPS --- */
+        .tips-container { margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .tip-card { background: var(--surface); border: 1px solid var(--border); padding: 1.25rem; border-radius: 16px; font-size: 0.85rem; }
+        .tip-card h5 { color: var(--accent); margin-bottom: 8px; font-size: 0.75rem; text-transform: uppercase; }
 
-        .btn-copy {
-            position: absolute;
-            top: 1.25rem;
-            right: 1.25rem;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 6px 14px;
-            border-radius: 10px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-        }
+        /* --- POWER TAGS --- */
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1rem; }
+        .p-tag { font-family: var(--font-mono); font-size: 0.7rem; padding: 6px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: var(--transition); }
+        .p-tag:hover { border-color: var(--accent); color: var(--accent); }
 
-        .btn-copy:hover { background: var(--accent); border-color: var(--accent); }
+        /* --- OUTPUT --- */
+        .output-box { background: #000; border: 1px solid var(--accent); padding: 2rem; border-radius: 20px; font-family: var(--font-mono); font-size: 0.9rem; color: #c4adff; line-height: 1.8; position: relative; margin-top: 2rem; }
+        .btn-copy { position: absolute; top: 1.25rem; right: 1.25rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text); padding: 6px 14px; border-radius: 10px; font-size: 0.65rem; font-weight: 700; cursor: pointer; }
 
-        /* --- VIDEO HUB --- */
-        .vid-list { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-        .vid-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 1.75rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .vid-card:hover { background: var(--surface-solid); border-color: var(--accent); transform: translateX(10px); }
-        .vid-info h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
-        .vid-ts { display: flex; gap: 8px; flex-wrap: wrap; }
-        .ts-pill { font-family: var(--font-mono); font-size: 0.7rem; padding: 4px 10px; background: var(--bg); border-radius: 8px; color: var(--accent); text-decoration: none; border: 1px solid var(--border); }
-        .ts-pill:hover { border-color: var(--accent); }
-
-        /* --- MOBILE TABS --- */
-        .mobile-tabs {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(2, 2, 5, 0.9);
-            backdrop-filter: blur(30px);
-            border-top: 1px solid var(--border);
-            padding: 1rem;
-            justify-content: space-around;
-            z-index: 1000;
-        }
-
-        .m-tab { font-size: 1.5rem; opacity: 0.5; cursor: pointer; transition: var(--transition); }
-        .m-tab.active { opacity: 1; color: var(--accent); transform: translateY(-5px); }
+        .mobile-tabs { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(2, 2, 5, 0.9); backdrop-filter: blur(30px); border-top: 1px solid var(--border); padding: 1rem; justify-content: space-around; z-index: 1000; }
+        .m-tab { font-size: 1.5rem; opacity: 0.5; cursor: pointer; }
+        .m-tab.active { opacity: 1; color: var(--accent); }
 
     </style>
 </head>
@@ -308,9 +121,9 @@
 
     <header class="nav-header">
         <div class="brand">SUNO <span>SONIC LAB</span></div>
-        <div class="controls">
+        <div style="display: flex; gap: 1rem; align-items: center;">
             <div id="status" style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 12px #10b981;"></div>
-            <button class="btn-theme" onclick="toggleTheme()">LIGHT MODE</button>
+            <button class="btn-theme" onclick="toggleTheme()" style="background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px 18px; border-radius: 100px; cursor: pointer; font-size: 0.75rem; font-weight: 700;">LIGHT MODE</button>
         </div>
     </header>
 
@@ -325,29 +138,31 @@
                 <li class="menu-item" onclick="switchTab('checklist', this)"><span>✓</span> Checklist</li>
             </ul>
 
-            <div class="credits-panel">
-                <label>Neural Credits</label>
-                <div class="val" id="credits">10,000</div>
-                <div style="font-size: 0.6rem; opacity: 0.4; margin-top: 6px; font-weight: 600;">GGLABS ENTERPRISE</div>
+            <div style="margin-top: auto; background: var(--surface-solid); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; text-align: center;">
+                <label style="font-size: 0.65rem; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase;">Neural Credits</label>
+                <div id="credits" style="font-family: var(--font-mono); font-size: 1.75rem; font-weight: 700; color: var(--accent); margin-top: 4px;">10,000</div>
             </div>
         </aside>
 
         <main>
             <!-- TAB: HOME -->
             <div id="tab-home" class="panel active">
-                <h1 class="hero-h1">Neural Audio <br>Intelligence.</h1>
-                <p class="hero-p">
-                    Bienvenido a **SONIC LAB**. La plataforma definitiva de ingeniería sonora para Suno AI. Optimizada para flujos de trabajo profesionales y resultados de alta fidelidad.
+                <h1 style="font-size: 4.5rem; font-weight: 800; line-height: 0.95; letter-spacing: -0.06em; margin-bottom: 1.5rem;">Neural Audio <br>Intelligence.</h1>
+                <p style="font-size: 1.25rem; color: var(--text-dim); max-width: 650px; margin-bottom: 3.5rem; line-height: 1.5;">
+                    Bienvenido a **SONIC LAB v4.5**. Tu copiloto creativo para Suno AI. Ingeniería sonora, estrategias de producción y optimización neural en una sola interfaz.
                 </p>
 
                 <div class="card-pro">
-                    <div class="section-header">
-                        <div class="badge-pro">System Core v4.0</div>
-                        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent);">STABLE</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <div class="badge-pro">Copiloto Creativo</div>
+                        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent);">ACTIVE</div>
                     </div>
-                    <h3>Ayuda Memoria Dinámica</h3>
+                    <h3>¿Cómo usar esta guía?</h3>
                     <p style="margin-top: 1.25rem; color: var(--text-dim); line-height: 1.7;">
-                        Diseñado para expertos. Navega por los módulos para inyectar parámetros de alta calidad, optimizar estructuras y acceder a la base de conocimientos de GGLabs.
+                        1. **Studio Pro**: Traduce tus ideas abstractas en parámetros técnicos.<br>
+                        2. **Max Mode**: Inyecta códigos de alta fidelidad para mezclas profesionales.<br>
+                        3. **Academy**: Aprende técnicas avanzadas con videos indexados.<br>
+                        4. **Playbooks**: Usa estructuras probadas para hits virales.
                     </p>
                 </div>
             </div>
@@ -355,52 +170,68 @@
             <!-- TAB: STUDIO -->
             <div id="tab-studio" class="panel">
                 <div class="card-pro">
-                    <div class="section-header">
-                        <div class="badge-pro">Prompt Engineering</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <div class="badge-pro">Neural Optimizer</div>
                         <div class="badge-pro" style="color: var(--accent); border-color: var(--accent);">Expert Mode</div>
                     </div>
-                    <h2>Sonic Optimizer</h2>
-                    <p style="margin: 1rem 0 2.5rem; color: var(--text-dim);">Generación de prompts técnicos con inferencia de parámetros de estudio.</p>
+                    <h2>Studio Pro Copilot</h2>
+                    <p style="margin: 1rem 0 2.5rem; color: var(--text-dim);">Describe tu idea y el motor neural la optimizará para Suno.</p>
+
+                    <div class="field" style="margin-bottom: 2rem;">
+                        <label>Idea Creativa (Traductor Neural)</label>
+                        <textarea id="s-idea" rows="2" placeholder="ej: Una balada oscura con mucha fuerza emocional y sub-bajos profundos..."></textarea>
+                    </div>
 
                     <div class="input-grid">
                         <div class="field">
-                            <label>Género & Estética</label>
-                            <input type="text" id="s-genre" placeholder="ej: Dark Phonk, Melodic Techno...">
+                            <label>Género Base</label>
+                            <input type="text" id="s-genre" placeholder="ej: Trap, Techno, Pop...">
                         </div>
                         <div class="field">
-                            <label>Inferencia de Mood</label>
-                            <select id="s-mood">
-                                <option value="dark, cinematic, aggressive, heavy sub-bass">🌑 Deep Cyberpunk</option>
-                                <option value="uplifting, euphoric, bright, wide stereo">☀️ Solar Energy</option>
-                                <option value="melancholic, lo-fi, intimate, warm analog">💜 Introspective Warmth</option>
-                                <option value="experimental, glitchy, raw, industrial">🧪 Raw Experimental</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>BPM / Tempo</label>
-                            <input type="number" id="s-bpm" value="128">
-                        </div>
-                        <div class="field">
-                            <label>Vocal Architecture</label>
+                            <label>Perfil Vocal</label>
                             <select id="s-voice">
-                                <option value="male, deep, processed, front-and-center">Masculina Grave Pro</option>
-                                <option value="female, ethereal, airy, lush reverb">Femenina Etérea Pro</option>
-                                <option value="distorted, robotic, vocoder, futuristic">Robótica / Neural</option>
-                                <option value="instrumental, no vocals, focus on textures">Solo Instrumental</option>
+                                <option value="male, deep, processed">Masculina Grave</option>
+                                <option value="female, ethereal, airy">Femenina Etérea</option>
+                                <option value="distorted, robotic, vocoder">Robótica / Neural</option>
+                                <option value="instrumental">Solo Instrumental</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2rem;">
+                        <label>Power Tags (Haz clic para añadir)</label>
+                        <div class="tag-cloud">
+                            <span class="p-tag" onclick="addTag('[Atmospheric]')">[Atmospheric]</span>
+                            <span class="p-tag" onclick="addTag('[Sidechain]')">[Sidechain]</span>
+                            <span class="p-tag" onclick="addTag('[Dry Vocals]')">[Dry Vocals]</span>
+                            <span class="p-tag" onclick="addTag('[Wide Stereo]')">[Wide Stereo]</span>
+                            <span class="p-tag" onclick="addTag('[Analog Warmth]')">[Analog Warmth]</span>
+                            <span class="p-tag" onclick="addTag('[Crescendo]')">[Crescendo]</span>
                         </div>
                     </div>
 
                     <button class="btn-sonic" onclick="generateSonicPrompt()">
-                        ✦ Optimizar Parámetros (10 Credits)
+                        ✦ Optimizar Idea (10 Credits)
                     </button>
 
-                    <div class="output-wrap" id="out-wrap" style="display: none;">
-                        <label>Neural Prompt Output</label>
-                        <div class="output-box">
-                            <button class="btn-copy" onclick="copyPrompt()">COPIAR</button>
-                            <span id="out-text"></span>
-                        </div>
+                    <div class="output-box" id="out-wrap" style="display: none;">
+                        <button class="btn-copy" onclick="copyPrompt()">COPIAR</button>
+                        <span id="out-text"></span>
+                    </div>
+                </div>
+
+                <div class="tips-container">
+                    <div class="tip-card">
+                        <h5>Tip de Mezcla</h5>
+                        Usa `[Dry Vocals]` si quieres que la voz suene íntima y sin mucho eco. Ideal para baladas.
+                    </div>
+                    <div class="tip-card">
+                        <h5>Tip de Energía</h5>
+                        Para drops potentes, añade `[Sidechain compression]` y `[Heavy transients]`.
+                    </div>
+                    <div class="tip-card">
+                        <h5>Tip de Estructura</h5>
+                        Suno responde mejor si separas las secciones con `[Intro]`, `[Verse]`, `[Chorus]`.
                     </div>
                 </div>
             </div>
@@ -410,46 +241,28 @@
                 <div class="card-pro" style="border-color: #ef4444;">
                     <div class="badge-pro" style="background: #ef4444; color: white; border: none;">High Priority</div>
                     <h2 style="margin-top: 1.5rem;">MAX MODE INJECTION</h2>
-                    <p style="margin: 1rem 0 2rem; color: var(--text-dim);">Inyecta estos códigos en el campo de estilo para forzar la máxima fidelidad del motor neural.</p>
-                    
+                    <p style="margin: 1rem 0 2rem; color: var(--text-dim);">Inyecta estos códigos para forzar la máxima fidelidad del motor neural.</p>
                     <div class="output-box" style="color: #ef4444; border-color: #ef4444;">
-                        is mode max<br>
-                        quality max max<br>
-                        realins max max<br>
-                        real instrument max max
+                        is mode max<br>quality max max<br>realins max max<br>real instrument max max
                     </div>
-                    <button class="btn-sonic" style="background: #ef4444;" onclick="copyText('is mode max\nquality max max\nrealins max max\nreal instrument max max')">
-                        COPIAR CÓDIGOS DE INYECCIÓN
-                    </button>
+                    <button class="btn-sonic" style="background: #ef4444;" onclick="copyText('is mode max\nquality max max\nrealins max max\nreal instrument max max')">COPIAR CÓDIGOS</button>
                 </div>
             </div>
 
-            <!-- TAB: ACADEMY -->
+            <!-- ACADEMY & OTHERS -->
             <div id="tab-academy" class="panel">
                 <h2 style="margin-bottom: 2rem;">Sonic Academy</h2>
-                <div class="vid-list" id="vid-container">
-                    <!-- Rendered by JS -->
-                </div>
+                <div id="vid-container" style="display: grid; gap: 1rem;"></div>
             </div>
-
-            <!-- PLACEHOLDERS FOR OTHER TABS -->
             <div id="tab-playbooks" class="panel">
-                <div class="card-pro">
-                    <h2>📼 Playbooks Estratégicos</h2>
-                    <p style="margin-top: 1rem; color: var(--text-dim);">Configuraciones pre-establecidas para géneros virales y comerciales.</p>
-                </div>
+                <div class="card-pro"><h2>📼 Playbooks</h2><p style="margin-top: 1rem; color: var(--text-dim);">Estrategias probadas para hits virales.</p></div>
             </div>
-
             <div id="tab-checklist" class="panel">
-                <div class="card-pro">
-                    <h2>✓ Checklist de Producción</h2>
-                    <p style="margin-top: 1rem; color: var(--text-dim);">Pasos críticos antes de finalizar tu track en Suno.</p>
-                </div>
+                <div class="card-pro"><h2>✓ Checklist</h2><p style="margin-top: 1rem; color: var(--text-dim);">Revisión final antes de publicar.</p></div>
             </div>
         </main>
     </div>
 
-    <!-- MOBILE NAV -->
     <nav class="mobile-tabs">
         <div class="m-tab active" onclick="switchTab('home', this)">🏠</div>
         <div class="m-tab" onclick="switchTab('studio', this)">🎛️</div>
@@ -458,113 +271,83 @@
     </nav>
 
     <script>
-        // --- THEME ENGINE ---
         function toggleTheme() {
             const body = document.body;
-            const btn = document.querySelector('.btn-theme');
             const isDark = body.getAttribute('data-theme') === 'dark';
             body.setAttribute('data-theme', isDark ? 'light' : 'dark');
-            btn.textContent = isDark ? 'DARK MODE' : 'LIGHT MODE';
         }
 
-        // --- SONIC CANVAS ---
         const canvas = document.getElementById('sonic-canvas');
         const ctx = canvas.getContext('2d');
         let w, h;
-
-        function init() {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
-        }
-
+        function init() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
         function draw() {
             ctx.clearRect(0, 0, w, h);
             const isDark = document.body.getAttribute('data-theme') === 'dark';
             ctx.strokeStyle = isDark ? 'rgba(139, 92, 246, 0.15)' : 'rgba(99, 102, 241, 0.1)';
             ctx.lineWidth = 0.5;
-
-            const step = 60;
-            const offset = (Date.now() / 40) % step;
-
-            for(let x = offset; x < w; x += step) {
-                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
-            }
-            for(let y = offset; y < h; y += step) {
-                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
-            }
+            const step = 60; const offset = (Date.now() / 40) % step;
+            for(let x = offset; x < w; x += step) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+            for(let y = offset; y < h; y += step) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
             requestAnimationFrame(draw);
         }
+        window.addEventListener('resize', init); init(); draw();
 
-        window.addEventListener('resize', init);
-        init(); draw();
-
-        // --- TABS ---
         function switchTab(id, el) {
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
             document.getElementById('tab-' + id).classList.add('active');
-            
             document.querySelectorAll('.menu-item, .m-tab').forEach(l => l.classList.remove('active'));
             el.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // --- LOGIC & CREDITS ---
         let credits = parseInt(localStorage.getItem('sonic_credits')) || 10000;
         document.getElementById('credits').textContent = credits.toLocaleString();
 
+        function addTag(tag) {
+            const idea = document.getElementById('s-idea');
+            idea.value += (idea.value ? ' ' : '') + tag;
+        }
+
         function generateSonicPrompt() {
             if(credits < 10) { alert("CREDITS EXHAUSTED."); return; }
-
-            const genre = document.getElementById('s-genre').value || "Sonic Architecture";
-            const mood = document.getElementById('s-mood').value;
-            const bpm = document.getElementById('s-bpm').value;
+            const idea = document.getElementById('s-idea').value || "Sonic Architecture";
+            const genre = document.getElementById('s-genre').value || "Electronic";
             const voice = document.getElementById('s-voice').value;
 
-            const prompt = `[Style: ${genre}, ultra-high fidelity, professional mix]\n[Mood: ${mood}]\n[Tempo: ${bpm} BPM]\n[Vocal: ${voice}]\n[Production: Neural-enhanced transients, deep soundstage, streaming-ready master]`;
+            // Neural Translation Logic
+            let inferred = "";
+            if(idea.toLowerCase().includes("triste")) inferred += "minor key, melancholic atmosphere, slow decay, ";
+            if(idea.toLowerCase().includes("fuerza")) inferred += "heavy transients, powerful dynamics, ";
+            if(idea.toLowerCase().includes("oscuro")) inferred += "dark textures, low-pass filter, cinematic depth, ";
+
+            const prompt = `[Style: ${genre}, ${inferred}high-fidelity production]\n[Idea: ${idea}]\n[Vocal: ${voice}]\n[Mastering: Neural-enhanced transients, wide stereo image, professional studio mix]`;
 
             document.getElementById('out-text').textContent = prompt;
             document.getElementById('out-wrap').style.display = 'block';
-            
             credits -= 10;
             localStorage.setItem('sonic_credits', credits);
             document.getElementById('credits').textContent = credits.toLocaleString();
         }
 
         function copyPrompt() { copyText(document.getElementById('out-text').textContent); }
+        function copyText(text) { navigator.clipboard.writeText(text).then(() => alert("COPIADO")); }
 
-        function copyText(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert("COPIED TO CLIPBOARD");
-            });
-        }
-
-        // --- ACADEMY RENDER ---
         const VIDEOS = [
             { title: "Prompts Correctos vs Largos", id: "wawkrWw2In8", ts: ["0:28", "1:27", "8:50"] },
             { title: "Max Mode - Testeo Completo", id: "XfFG27IkjIM", ts: ["1:25", "4:45", "6:34"] },
-            { title: "Studio Mode - Instrumentos", id: "r60dTNcZntE", ts: ["2:30", "8:20", "10:45"] },
-            { title: "Modo Travieso - Calidad Máxima", id: "6WIFH6GMabA", ts: ["1:30", "3:45", "6:00"] }
+            { title: "Studio Mode - Instrumentos", id: "r60dTNcZntE", ts: ["2:30", "8:20", "10:45"] }
         ];
-
         function renderVideos() {
             const container = document.getElementById('vid-container');
             VIDEOS.forEach(v => {
                 const div = document.createElement('div');
-                div.className = 'vid-card';
-                div.innerHTML = `
-                    <div class="vid-info">
-                        <h4>${v.title}</h4>
-                        <div class="vid-ts">
-                            ${v.ts.map(t => `<a href="https://youtube.com/watch?v=${v.id}&t=${t.split(':')[0]}m${t.split(':')[1]}s" class="ts-pill" target="_blank">${t}</a>`).join('')}
-                        </div>
-                    </div>
-                    <a href="https://youtube.com/watch?v=${v.id}" target="_blank" style="color: var(--accent); font-weight: 800; font-size: 0.7rem; text-decoration: none;">WATCH</a>
-                `;
+                div.style.cssText = "background: var(--surface); border: 1px solid var(--border); padding: 1.5rem; border-radius: 20px; display: flex; justify-content: space-between; align-items: center;";
+                div.innerHTML = `<div><h4 style="margin-bottom: 8px;">${v.title}</h4><div style="display: flex; gap: 8px;">${v.ts.map(t => `<a href="https://youtube.com/watch?v=${v.id}&t=${t.split(':')[0]}m${t.split(':')[1]}s" target="_blank" style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); text-decoration: none; border: 1px solid var(--border); padding: 2px 8px; border-radius: 6px;">${t}</a>`).join('')}</div></div><a href="https://youtube.com/watch?v=${v.id}" target="_blank" style="color: var(--accent); font-weight: 800; font-size: 0.7rem; text-decoration: none;">WATCH</a>`;
                 container.appendChild(div);
             });
         }
         renderVideos();
-
     </script>
 </body>
 </html>
