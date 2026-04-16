@@ -1,29 +1,25 @@
-# SONIC ARCHITECT v8.0 — Mega App de Inteligencia Musical (70 Credits Optimization)
+# SONIC ARCHITECT v8.0 — Inteligencia Musical
 
-**Sonic Architect** es la evolución profesional de *Suno Prompt Lab*. Esta plataforma está diseñada para transformar visiones artísticas en realidades sonoras de alta fidelidad utilizando el motor de **Suno AI**.
+**Sonic Architect** es tu brazo extra de Suno AI. Transforma visiones artísticas en arquitecturas sonoras de alta fidelidad, sin restricciones.
 
-## 🚀 Características Principales
+## 🚀 Características
 
-- **Comparativa Visual (Input vs Output)**: Ve lado a lado cómo la IA transforma tu idea en una arquitectura sonora profesional.
-- **Inyectores de Estilo Quirúrgicos**: 6 botones de control para aplicar estilos específicos (Fidelidad, Voces, Bajos, Reverb, Dinámicas, Estéreo).
-- **Generador de Prompts Inteligente**: Traduce visiones artísticas en parámetros técnicos optimizados para Suno.
-- **Sonic Academy (17 Módulos)**: Masterclasses profesionales indexadas para dominar cada aspecto del motor neural.
-- **Max Precision Injectors**: Inyectores de metadatos de alto nivel con costos de créditos específicos.
+- **Comparativa Visual (Input vs Output)** — Ve en tiempo real cómo tu idea se convierte en un prompt optimizado para Suno.
+- **Inyectores de Estilo** — 6 botones de control (Fidelidad, Voces, Bajos, Reverb, Dinámicas, Estéreo).
+- **Generador de Prompts Inteligente** — Traduce tu visión en parámetros técnicos listos para Suno.
+- **Sonic Academy (17 Módulos)** — Masterclasses indexadas con timestamps directos a YouTube.
+- **Max Precision Injectors** — Códigos avanzados de fidelidad máxima para pegar directo en Suno.
 
-## 🎓 Módulos de Aprendizaje
+## ⚡ Max Injectors incluidos
 
-**SONIC ARCHITECT es tu brazo extra de Suno AI**. No solo genera prompts, sino que:
+- `is mode max | quality max max | realins max max | real instrument max max`
+- Vocal Max Mode con sintaxis `start on through`
+- Duet Mode para voces diferenciadas
+- Bajos profundos, Reverb Studio, Estéreo ancho
 
-- Demuestra la diferencia entre un input básico y un output optimizado.
-- Proporciona inyectores de estilo para control quirúrgico sobre cada aspecto sonoro.
-- Gestiona 70 créditos de optimización para variaciones estratégicas.
-- Ofrece 17 masterclasses profesionales para dominar la ingeniería de prompts.
-- Actúa como copiloto experto en la creación de canciones de nivel comercial.
+## 🌐 Live App
 
-## 🌐 Live Preview
-
-Puedes acceder a la plataforma actualizada aquí:
 [https://univers77.github.io/suno-prompt-lab](https://univers77.github.io/suno-prompt-lab)
 
 ---
-*Desarrollado por GGLabs Bolivia para la comunidad global de arquitectos sonoros.*
+*GGLabs Bolivia · @pilotpulse9 · In Extremis*
