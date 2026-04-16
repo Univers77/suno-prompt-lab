@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>SONIC ARCHITECT v8.0 — Mega App de Inteligencia Musical</title>
+    <title>SONIC ARCHITECT v8.0 — Inteligencia Musical</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
     <style>
@@ -51,7 +51,7 @@
         /* ─── APP SHELL ─── */
         .app-shell {
             max-width: 1600px; margin: 80px auto 0; padding: 2rem;
-            display: grid; grid-template-columns: 300px 1fr; gap: 2rem;
+            display: grid; grid-template-columns: 260px 1fr; gap: 2rem;
         }
 
         @media (max-width: 1024px) {
@@ -60,9 +60,9 @@
         }
 
         /* ─── SIDEBAR ─── */
-        .sidebar { position: sticky; top: 100px; height: calc(100vh - 120px); display: flex; flex-direction: column; gap: 1rem; overflow-y: auto; }
+        .sidebar { position: sticky; top: 100px; height: fit-content; display: flex; flex-direction: column; gap: 0.5rem; }
         .menu-item {
-            padding: 12px 18px; border-radius: 12px; margin-bottom: 5px;
+            padding: 12px 18px; border-radius: 12px;
             cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 12px;
             font-weight: 700; font-size: 0.9rem; color: var(--text-dim); background: var(--surface);
             border: 1px solid transparent; position: relative; overflow: hidden;
@@ -71,17 +71,6 @@
         .menu-item:hover::before { left: 100%; }
         .menu-item:hover, .menu-item.active { color: var(--primary); border-color: var(--primary); }
         .menu-item.active { background: rgba(0, 255, 136, 0.05); }
-
-        /* ─── CREDIT CARD ─── */
-        .credit-card {
-            background: var(--surface); border: 2px solid var(--gold); border-radius: 16px; padding: 1.5rem;
-            margin-top: auto; position: relative; overflow: hidden;
-        }
-        .credit-label { font-size: 0.65rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; display: block; font-weight: 700; }
-        .credit-count { font-family: var(--font-header); font-size: 2.2rem; font-weight: 900; color: var(--text); margin-bottom: 10px; }
-        .credit-bar { height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; overflow: hidden; margin-bottom: 8px; }
-        .credit-fill { height: 100%; width: 100%; background: linear-gradient(90deg, var(--gold), var(--primary)); transition: width 0.5s; }
-        .credit-info { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; }
 
         /* ─── PANELS ─── */
         .panel { display: none; animation: fadeIn 0.5s ease forwards; }
@@ -99,22 +88,25 @@
 
         /* ─── COMPARATIVA ─── */
         .comparison-box {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0;
+            display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; margin: 2rem 0; align-items: center;
         }
+        @media(max-width: 640px) { .comparison-box { grid-template-columns: 1fr; } }
         .comp-item { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
         .comp-item h4 { font-family: var(--font-header); font-size: 0.8rem; color: var(--primary); text-transform: uppercase; margin-bottom: 1rem; }
         .comp-item.output h4 { color: var(--secondary); }
         .comp-content { font-size: 0.85rem; color: var(--text); line-height: 1.7; font-family: var(--font-main); }
-        .arrow-icon { text-align: center; font-size: 2rem; color: var(--gold); margin: 1rem 0; }
+        .arrow-icon { text-align: center; font-size: 2rem; color: var(--gold); }
 
         /* ─── FORM ─── */
         .field { margin-bottom: 1.5rem; }
         .field label { display: block; font-size: 0.75rem; color: var(--primary); text-transform: uppercase; margin-bottom: 8px; font-weight: 700; letter-spacing: 0.05em; }
         textarea, input, select { width: 100%; background: #02040a; border: 1px solid var(--border); padding: 14px; border-radius: 10px; color: var(--text); font-family: var(--font-main); font-size: 0.9rem; transition: all 0.3s; }
         textarea:focus, input:focus, select:focus { border-color: var(--secondary); box-shadow: 0 0 15px rgba(255, 0, 255, 0.2); outline: none; }
+        select option { background: #0a0e27; }
 
         /* ─── INYECTORES ─── */
         .injectors-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0; }
+        @media(max-width: 500px) { .injectors-grid { grid-template-columns: repeat(2, 1fr); } }
         .injector-btn {
             background: rgba(0, 255, 136, 0.05); border: 1px solid var(--primary); padding: 12px; border-radius: 12px;
             cursor: pointer; transition: all 0.3s; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
@@ -129,13 +121,13 @@
         .btn-main:hover::before { left: 100%; }
         .btn-main:hover { transform: scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 136, 0.4); }
 
-        .btn-secondary { background: rgba(0, 255, 136, 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: 10px; cursor: pointer; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; transition: all 0.3s; margin-right: 8px; margin-bottom: 8px; }
+        .btn-secondary { background: rgba(0, 255, 136, 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 10px 16px; border-radius: 10px; cursor: pointer; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; transition: all 0.3s; margin-top: 10px; display: inline-block; }
         .btn-secondary:hover { background: var(--primary); color: #000; }
 
         /* ─── OUTPUT ─── */
         .output-box { background: #000; border: 2px dashed var(--secondary); padding: 1.5rem; border-radius: 12px; font-family: var(--font-main); font-size: 0.85rem; color: var(--primary); position: relative; margin-top: 1.5rem; white-space: pre-wrap; word-break: break-word; animation: pulse-border 2s infinite; }
-        .copy-btn { position: absolute; top: 10px; right: 10px; font-size: 0.6rem; background: var(--primary); color: #000; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: 700; transition: 0.2s; }
-        .copy-btn:hover { background: var(--secondary); }
+        .copy-btn { position: absolute; top: 10px; right: 10px; font-size: 0.6rem; background: var(--primary); color: #000; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: 700; transition: 0.2s; border: none; }
+        .copy-btn:hover { background: var(--secondary); color: #000; }
 
         @keyframes pulse-border { 0%, 100% { border-color: var(--secondary); box-shadow: 0 0 10px rgba(255, 0, 255, 0.2); } 50% { border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); } }
 
@@ -145,18 +137,27 @@
         .tip-box h5 { font-family: var(--font-header); font-size: 0.7rem; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; }
         .tip-box p { font-size: 0.75rem; color: var(--text-dim); line-height: 1.5; }
 
+        /* ─── INJECTOR CARDS ─── */
+        .injector-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
+        .injector-card h4 { font-family: var(--font-header); font-size: 0.8rem; color: var(--gold); text-transform: uppercase; margin-bottom: 0.75rem; }
+        .injectors-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        @media(max-width: 640px) { .injectors-2col { grid-template-columns: 1fr; } }
+
         /* ─── ACADEMY ─── */
         .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
         .video-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: all 0.3s; }
         .video-card:hover { border-color: var(--secondary); transform: translateY(-5px); box-shadow: 0 0 20px rgba(255, 0, 255, 0.15); }
-        .video-thumb { aspect-ratio: 16/9; background: #000; position: relative; }
+        .video-thumb { aspect-ratio: 16/9; background: #000; position: relative; overflow: hidden; }
         .video-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s; }
         .video-card:hover img { opacity: 1; filter: brightness(1.1); }
         .video-info { padding: 1rem; }
-        .video-info h4 { font-family: var(--font-header); font-size: 0.8rem; margin-bottom: 5px; color: var(--primary); }
+        .video-info h4 { font-family: var(--font-header); font-size: 0.8rem; margin-bottom: 8px; color: var(--primary); }
         .btn-watch { display: block; text-align: center; background: rgba(0, 255, 136, 0.1); color: var(--primary); border: 1px solid var(--primary); padding: 8px; border-radius: 8px; text-decoration: none; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; transition: 0.2s; }
         .btn-watch:hover { background: var(--primary); color: #000; }
 
+        /* ─── NOTIFY ─── */
+        .notify { position: fixed; bottom: 24px; right: 24px; background: var(--primary); color: #000; padding: 12px 20px; border-radius: 10px; font-weight: 700; font-size: 0.8rem; font-family: var(--font-header); z-index: 9999; animation: notifyIn 0.3s ease; pointer-events: none; }
+        @keyframes notifyIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -165,69 +166,60 @@
     <header class="nav-header">
         <div class="brand">SONIC <span>ARCHITECT</span></div>
         <div style="display: flex; gap: 1rem; align-items: center;">
-            <div id="status-dot" style="width: 10px; height: 10px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 15px var(--primary);"></div>
-            <span style="font-family: var(--font-header); font-size: 0.75rem; color: var(--primary);">v8.0 MEGA APP</span>
+            <div style="width: 10px; height: 10px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 15px var(--primary); animation: pulse-glow 1.5s infinite;"></div>
+            <span style="font-family: var(--font-header); font-size: 0.75rem; color: var(--primary);">v8.0 · GGLabs</span>
         </div>
     </header>
 
     <div class="app-shell">
         <aside class="sidebar">
-            <ul class="menu-list">
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:4px;">
                 <li class="menu-item active" onclick="switchTab('home', this)"><span>🏠</span> Home</li>
                 <li class="menu-item" onclick="switchTab('studio', this)"><span>🎛️</span> Neural Studio Pro</li>
                 <li class="menu-item" onclick="switchTab('academy', this)"><span>🎓</span> Academy</li>
                 <li class="menu-item" onclick="switchTab('max', this)"><span>⚡</span> Max Injectors</li>
             </ul>
-
-            <div class="credit-card">
-                <span class="credit-label">Neural Credits</span>
-                <div class="credit-count" id="credits">70</div>
-                <div class="credit-bar">
-                    <div class="credit-fill" id="credit-fill"></div>
-                </div>
-                <div class="credit-info">Optimization Load: <span id="load-pct">100%</span></div>
-            </div>
         </aside>
 
         <main>
-            <!-- HOME -->
+            <!-- ═══ HOME ═══ -->
             <div id="tab-home" class="panel active">
                 <h1 class="hero-title">Brazo Extra de <span>Suno AI.</span></h1>
-                
+
                 <div class="card">
-                    <div class="badge">🧠 Mega App de Inteligencia</div>
-                    <h3>La Revolución de la Generación Musical</h3>
-                    <p style="color: var(--text-dim); line-height: 1.8; margin-top: 1rem;">
-                        **SONIC ARCHITECT v8.0** no es solo un generador de prompts. Es tu **brazo extra de Suno**, diseñado para:<br><br>
-                        ✦ Transformar ideas abstractas en arquitecturas sonoras de precisión quirúrgica.<br>
+                    <div class="badge">🧠 Inteligencia Musical</div>
+                    <h3 style="margin-bottom: 1rem; font-family: var(--font-header); font-size: 1rem;">La Revolución de la Generación Musical</h3>
+                    <p style="color: var(--text-dim); line-height: 1.9;">
+                        <strong style="color: var(--primary);">SONIC ARCHITECT v8.0</strong> es tu brazo extra de Suno, diseñado para:<br><br>
+                        ✦ Transformar ideas abstractas en arquitecturas sonoras de precisión.<br>
                         ✦ Demostrar la diferencia entre un prompt básico y uno optimizado.<br>
-                        ✦ Inyectar estilos específicos (Fidelidad, Voces, Masterización) con botones de control.<br>
-                        ✦ Generar variaciones estratégicas basadas en 70 créditos de optimización profunda.
+                        ✦ Inyectar estilos específicos (Fidelidad, Voces, Masterización) con un clic.<br>
+                        ✦ Generar variaciones estratégicas con parámetros de producción real.
                     </p>
                 </div>
 
                 <div class="card">
-                    <h4 style="font-family: var(--font-header); color: var(--gold); margin-bottom: 1rem;">Workflow Experto:</h4>
-                    <div style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.8;">
-                        1️⃣ <strong>Ideación</strong>: Describe tu visión musical en lenguaje natural.<br>
-                        2️⃣ <strong>Arquitectura</strong>: La IA traduce a parámetros técnicos de Suno.<br>
-                        3️⃣ <strong>Inyección</strong>: Aplica estilos específicos con botones de control.<br>
-                        4️⃣ <strong>Comparativa</strong>: Ve lado a lado el prompt original vs. optimizado.<br>
-                        5️⃣ <strong>Copia Directa</strong>: Lleva el prompt a Suno en un clic.
+                    <h4 style="font-family: var(--font-header); color: var(--gold); margin-bottom: 1rem; font-size: 0.9rem;">Workflow Experto</h4>
+                    <div style="font-size: 0.85rem; color: var(--text-dim); line-height: 2;">
+                        1️⃣ <strong style="color:var(--text);">Ideación</strong> — Describe tu visión musical en lenguaje natural.<br>
+                        2️⃣ <strong style="color:var(--text);">Arquitectura</strong> — La app traduce a parámetros técnicos de Suno.<br>
+                        3️⃣ <strong style="color:var(--text);">Inyección</strong> — Aplica estilos específicos con botones de control.<br>
+                        4️⃣ <strong style="color:var(--text);">Comparativa</strong> — Ve en tiempo real tu idea original vs. el prompt optimizado.<br>
+                        5️⃣ <strong style="color:var(--text);">Copia Directa</strong> — Lleva el prompt a Suno en un clic.
                     </div>
                 </div>
             </div>
 
-            <!-- STUDIO PRO -->
+            <!-- ═══ STUDIO PRO ═══ -->
             <div id="tab-studio" class="panel">
                 <div class="card">
                     <div class="badge">🎛️ Neural Studio Pro v8.0</div>
-                    <h2>Generador de Prompts Inteligente</h2>
-                    <p style="color: var(--text-dim); margin-bottom: 2rem;">Transforma tu visión en una arquitectura sonora optimizada. Observa la comparativa en tiempo real.</p>
+                    <h2 style="font-family: var(--font-header); font-size: 1.1rem; margin-bottom: 0.5rem;">Generador de Prompts Inteligente</h2>
+                    <p style="color: var(--text-dim); margin-bottom: 2rem; font-size: 0.85rem;">Transforma tu visión en una arquitectura sonora optimizada. Observa la comparativa en tiempo real.</p>
 
                     <div class="field">
-                        <label>🎨 Tu Visión Musical (Input Básico)</label>
-                        <textarea id="vision" rows="3" placeholder="ej: Una canción triste y reflexiva, con piano melancólico y voces etéreas..."></textarea>
+                        <label>🎨 Tu Visión Musical</label>
+                        <textarea id="vision" rows="3" placeholder="ej: Una canción oscura y reflexiva, piano melancólico, voces etéreas, atmósfera de madrugada..."></textarea>
                     </div>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
@@ -238,25 +230,28 @@
                         <div class="field">
                             <label>🎤 Tipo de Voz</label>
                             <select id="vocal">
-                                <option value="ethereal-female">Femenina Etérea</option>
-                                <option value="gritty-male">Masculina Íntima</option>
-                                <option value="robotic">Procesado Neural</option>
-                                <option value="instrumental">Instrumental Puro</option>
+                                <option value="ethereal female, breathy">Femenina Etérea</option>
+                                <option value="intimate male, raw">Masculina Íntima</option>
+                                <option value="processed, neural, vocoder">Procesado Neural</option>
+                                <option value="instrumental only, no vocals">Solo Instrumental</option>
+                                <option value="powerful female, belting">Femenina Poderosa</option>
+                                <option value="deep male, gravelly">Masculina Grave</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="field">
-                        <label>🎯 Objetivo de Producción</label>
+                        <label>🎯 Preset de Producción</label>
                         <select id="goal">
-                            <option value="demo">Demo Rápida (Bajo Consumo)</option>
-                            <option value="studio">Calidad de Estudio (Alta Fidelidad)</option>
-                            <option value="viral">Viral Hit (Energía Máxima)</option>
+                            <option value="demo, quick, rough mix">Demo Rápida</option>
+                            <option value="studio quality, high fidelity, mastered">Calidad de Estudio</option>
+                            <option value="viral, high energy, radio ready">Viral Hit</option>
+                            <option value="cinematic, orchestral, atmospheric">Cinemático</option>
                         </select>
                     </div>
 
                     <div class="field">
-                        <label>⚙️ Inyectores de Estilo (Selecciona múltiples)</label>
+                        <label>⚙️ Inyectores de Estilo</label>
                         <div class="injectors-grid">
                             <button class="injector-btn" onclick="toggleInjector(this, 'fidelity')">🎚️ Fidelidad Max</button>
                             <button class="injector-btn" onclick="toggleInjector(this, 'vocals')">🎤 Voces Claras</button>
@@ -267,88 +262,105 @@
                         </div>
                     </div>
 
-                    <button class="btn-main" onclick="generatePrompt()">
-                        ✦ Arquitecturar Prompt Optimizado (10 Credits)
-                    </button>
+                    <button class="btn-main" onclick="generatePrompt()">✦ Arquitecturar Prompt Optimizado</button>
 
                     <!-- COMPARATIVA -->
                     <div id="comparison" style="display: none; margin-top: 2rem;">
-                        <h3 style="font-family: var(--font-header); font-size: 1rem; margin-bottom: 1.5rem; color: var(--gold);">📊 COMPARATIVA: INPUT vs OUTPUT</h3>
-                        
+                        <h3 style="font-family: var(--font-header); font-size: 0.9rem; margin-bottom: 1.5rem; color: var(--gold);">📊 INPUT vs OUTPUT</h3>
+
                         <div class="comparison-box">
                             <div class="comp-item">
-                                <h4>📝 Input Original (Tu Idea)</h4>
+                                <h4>📝 Tu Idea Original</h4>
                                 <div class="comp-content" id="input-display"></div>
                             </div>
-                            <div style="display: flex; align-items: center; justify-content: center;">
-                                <div class="arrow-icon">→</div>
-                            </div>
+                            <div class="arrow-icon">→</div>
                             <div class="comp-item output">
-                                <h4>✨ Output Optimizado (Arquitectura)</h4>
+                                <h4>✨ Prompt Optimizado</h4>
                                 <div class="comp-content" id="output-display"></div>
                             </div>
                         </div>
 
                         <div class="output-box" id="final-prompt" style="display: none;">
-                            <div class="copy-btn" onclick="copyPrompt()">COPIAR A SUNO</div>
+                            <button class="copy-btn" onclick="copyPrompt()">COPIAR A SUNO</button>
                             <span id="prompt-text"></span>
                         </div>
 
                         <div class="tips-grid">
                             <div class="tip-box">
-                                <h5>💡 Tip: Prioridades</h5>
-                                <p>El prompt optimizado prioriza: 1) Respetar, 2) Cambiar, 3) Evitar.</p>
+                                <h5>💡 Prioridades</h5>
+                                <p>El prompt prioriza: 1) Respetar tu visión, 2) Enriquecer técnicamente, 3) Evitar genéricos.</p>
                             </div>
                             <div class="tip-box">
-                                <h5>🎲 Tip: Estocasticidad</h5>
-                                <p>Genera 4-6 variaciones. La consistencia emerge del análisis estadístico.</p>
+                                <h5>🎲 Variaciones</h5>
+                                <p>Genera 4-6 variaciones en Suno. La consistencia emerge del análisis estadístico.</p>
                             </div>
                             <div class="tip-box">
-                                <h5>⚙️ Tip: Inyectores</h5>
-                                <p>Los inyectores activos se reflejan en la arquitectura final.</p>
+                                <h5>⚙️ Inyectores</h5>
+                                <p>Los inyectores activos se reflejan directamente en la arquitectura del prompt final.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ACADEMY -->
+            <!-- ═══ ACADEMY ═══ -->
             <div id="tab-academy" class="panel">
                 <div class="badge">🎓 Masterclasses</div>
-                <h2 style="margin-bottom: 2rem;">Sonic Academy — 17 Módulos Críticos</h2>
+                <h2 style="margin-bottom: 2rem; font-family: var(--font-header); font-size: 1rem;">Sonic Academy — 17 Módulos</h2>
                 <div class="video-grid" id="video-grid"></div>
             </div>
 
-            <!-- MAX INJECTORS -->
+            <!-- ═══ MAX INJECTORS ═══ -->
             <div id="tab-max" class="panel">
                 <div class="card" style="border-color: var(--secondary);">
                     <div class="badge" style="background: rgba(255, 0, 255, 0.1); color: var(--secondary);">⚡ Max Precision Injectors</div>
-                    <h2>Inyectores de Metadatos Avanzados</h2>
-                    <p style="color: var(--text-dim); margin-bottom: 2rem;">Códigos de alto nivel para forzar fidelidad de estudio profesional.</p>
+                    <h2 style="font-family: var(--font-header); font-size: 1rem; margin-bottom: 0.5rem;">Inyectores de Metadatos Avanzados</h2>
+                    <p style="color: var(--text-dim); margin-bottom: 2rem; font-size: 0.85rem;">Códigos de alto nivel para forzar fidelidad de estudio profesional en Suno.</p>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
-                        <div>
-                            <h4 style="color: var(--gold); font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase;">🎚️ Fidelidad Máxima</h4>
-                            <div class="output-box" style="font-size: 0.75rem;">is mode max | quality max max | realins max max</div>
-                            <button class="btn-secondary" onclick="copyInjector('is mode max | quality max max | realins max max', 500)">Copiar (500 Cr)</button>
+                    <div class="injectors-2col">
+                        <div class="injector-card">
+                            <h4>🎚️ Fidelidad Máxima</h4>
+                            <div class="output-box" style="font-size: 0.75rem; margin-top: 0;">is mode max
+quality max max
+realins max max
+real instrument max max</div>
+                            <button class="btn-secondary" onclick="copyText('is mode max\nquality max max\nrealins max max\nreal instrument max max')">Copiar</button>
                         </div>
-                        <div>
-                            <h4 style="color: var(--gold); font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase;">🎤 Voces Limpias</h4>
-                            <div class="output-box" style="font-size: 0.75rem;">vocal clarity max | dry signal | no compression</div>
-                            <button class="btn-secondary" onclick="copyInjector('vocal clarity max | dry signal | no compression', 300)">Copiar (300 Cr)</button>
+                        <div class="injector-card">
+                            <h4>🎤 Voces Limpias</h4>
+                            <div class="output-box" style="font-size: 0.75rem; margin-top: 0;">///
+*****
+///
+start on through "[tu primer frase]"</div>
+                            <button class="btn-secondary" onclick="copyText('///\n*****\n///\nstart on through \"[tu primer frase]\"')">Copiar</button>
                         </div>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div>
-                            <h4 style="color: var(--gold); font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase;">🔊 Bajos Profundos</h4>
-                            <div class="output-box" style="font-size: 0.75rem;">bass depth max | sub-bass presence | low-end power</div>
-                            <button class="btn-secondary" onclick="copyInjector('bass depth max | sub-bass presence | low-end power', 300)">Copiar (300 Cr)</button>
+                    <div class="injectors-2col">
+                        <div class="injector-card">
+                            <h4>🔊 Bajos Profundos</h4>
+                            <div class="output-box" style="font-size: 0.75rem; margin-top: 0;">bass depth max | sub-bass presence | low-end power</div>
+                            <button class="btn-secondary" onclick="copyText('bass depth max | sub-bass presence | low-end power')">Copiar</button>
                         </div>
-                        <div>
-                            <h4 style="color: var(--gold); font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase;">✨ Reverb Studio</h4>
-                            <div class="output-box" style="font-size: 0.75rem;">reverb space max | studio ambience | depth control</div>
-                            <button class="btn-secondary" onclick="copyInjector('reverb space max | studio ambience | depth control', 250)">Copiar (250 Cr)</button>
+                        <div class="injector-card">
+                            <h4>👥 Duet Mode</h4>
+                            <div class="output-box" style="font-size: 0.75rem; margin-top: 0;">duet start on through
+mail start on "[frase hombre]"
+female start on "[frase mujer]"</div>
+                            <button class="btn-secondary" onclick="copyText('duet start on through\nmail start on \"[frase hombre]\"\nfemale start on \"[frase mujer]\"')">Copiar</button>
+                        </div>
+                    </div>
+
+                    <div class="injectors-2col">
+                        <div class="injector-card">
+                            <h4>✨ Reverb Studio</h4>
+                            <div class="output-box" style="font-size: 0.75rem; margin-top: 0;">reverb space max | studio ambience | depth control</div>
+                            <button class="btn-secondary" onclick="copyText('reverb space max | studio ambience | depth control')">Copiar</button>
+                        </div>
+                        <div class="injector-card">
+                            <h4>🌊 Estéreo Ancho</h4>
+                            <div class="output-box" style="font-size: 0.75rem; margin-top: 0;">wide stereo field | spatial audio | immersive mix</div>
+                            <button class="btn-secondary" onclick="copyText('wide stereo field | spatial audio | immersive mix')">Copiar</button>
                         </div>
                     </div>
                 </div>
@@ -377,17 +389,7 @@
             { title: "Workflow Pipeline", id: "IN_m5KAoSy4", t: "0s" }
         ];
 
-        let credits = 70;
-        const maxCredits = 70;
         let activeInjectors = [];
-
-        function updateCredits(amount) {
-            credits = Math.max(0, credits - amount);
-            document.getElementById('credits').textContent = credits;
-            const pct = (credits / maxCredits) * 100;
-            document.getElementById('credit-fill').style.width = pct + '%';
-            document.getElementById('load-pct').textContent = Math.round(pct) + '%';
-        }
 
         function toggleInjector(btn, name) {
             btn.classList.toggle('active');
@@ -399,55 +401,61 @@
         }
 
         function generatePrompt() {
-            if (credits < 10) { alert("Créditos insuficientes."); return; }
-
-            const vision = document.getElementById('vision').value || "Sonic Architecture";
-            const genre = document.getElementById('genre').value || "Experimental";
+            const vision = document.getElementById('vision').value.trim() || "Sonic Architecture";
+            const genre = document.getElementById('genre').value.trim() || "Experimental";
             const vocal = document.getElementById('vocal').value;
             const goal = document.getElementById('goal').value;
 
-            // INPUT DISPLAY
             document.getElementById('input-display').textContent = vision;
 
-            // OUTPUT GENERATION
-            let output = `[Style: ${genre}, ${goal.toUpperCase()} PRESET]\n`;
-            output += `[Vocal: ${vocal}]\n`;
-            
-            if (activeInjectors.includes('fidelity')) output += `[Fidelity: Maximum, Studio Grade]\n`;
-            if (activeInjectors.includes('vocals')) output += `[Vocals: Clear, Dry, Intimate]\n`;
-            if (activeInjectors.includes('bass')) output += `[Bass: Deep, Powerful, Presence]\n`;
-            if (activeInjectors.includes('reverb')) output += `[Reverb: Studio Space, Depth]\n`;
-            if (activeInjectors.includes('dynamics')) output += `[Dynamics: Live, Responsive, Punchy]\n`;
-            if (activeInjectors.includes('stereo')) output += `[Stereo: Wide, Immersive, Spatial]\n`;
-            
-            output += `[Neural Intent: ${vision}]\n`;
-            output += `[Mastering: Professional, High-Fidelity]`;
+            let output = `${genre}, ${goal}\n`;
+            output += `Voice: ${vocal}\n`;
+            if (activeInjectors.includes('fidelity')) output += `is mode max, quality max max, realins max max\n`;
+            if (activeInjectors.includes('vocals'))   output += `vocal clarity max, dry signal\n`;
+            if (activeInjectors.includes('bass'))     output += `bass depth max, sub-bass presence\n`;
+            if (activeInjectors.includes('reverb'))   output += `reverb space max, studio ambience\n`;
+            if (activeInjectors.includes('dynamics')) output += `dynamics: live, responsive, punchy\n`;
+            if (activeInjectors.includes('stereo'))   output += `wide stereo field, spatial audio\n`;
+            output += `Intent: ${vision}`;
 
             document.getElementById('output-display').textContent = output;
             document.getElementById('prompt-text').textContent = output;
             document.getElementById('comparison').style.display = 'block';
             document.getElementById('final-prompt').style.display = 'block';
-
-            updateCredits(10);
+            document.getElementById('comparison').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
         function copyPrompt() {
-            navigator.clipboard.writeText(document.getElementById('prompt-text').textContent).then(() => alert("✓ Prompt Copiado a Suno"));
+            copyText(document.getElementById('prompt-text').textContent);
         }
 
-        function copyInjector(text, cost) {
-            if (credits < cost) { alert("Créditos insuficientes."); return; }
+        function copyText(text) {
             navigator.clipboard.writeText(text).then(() => {
-                updateCredits(cost);
-                alert("✓ Inyector Copiado (-" + cost + " Credits)");
+                showNotify('✓ Copiado al portapapeles');
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+                showNotify('✓ Copiado');
             });
+        }
+
+        function showNotify(msg) {
+            const n = document.createElement('div');
+            n.className = 'notify';
+            n.textContent = msg;
+            document.body.appendChild(n);
+            setTimeout(() => n.remove(), 2000);
         }
 
         function switchTab(id, el) {
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
             document.getElementById('tab-' + id).classList.add('active');
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
-            if (el && el.classList.contains('menu-item')) el.classList.add('active');
+            if (el) el.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -457,17 +465,19 @@
                 const card = document.createElement('div');
                 card.className = 'video-card';
                 card.innerHTML = `
-                    <div class="video-thumb"><img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg"></div>
+                    <div class="video-thumb">
+                        <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="${v.title}" loading="lazy">
+                    </div>
                     <div class="video-info">
                         <h4>${v.title}</h4>
-                        <a href="https://www.youtube.com/watch?v=${v.id}&t=${v.t}" target="_blank" class="btn-watch">Estudiar</a>
+                        <a href="https://www.youtube.com/watch?v=${v.id}&t=${v.t}" target="_blank" rel="noopener" class="btn-watch">▶ Ver ahora</a>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        // Background Animation
+        // Background grid animation
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let w, h;
@@ -477,12 +487,12 @@
 
         function draw() {
             ctx.clearRect(0, 0, w, h);
-            ctx.strokeStyle = 'rgba(0, 255, 136, 0.08)';
+            ctx.strokeStyle = 'rgba(0, 255, 136, 0.06)';
             ctx.lineWidth = 1;
-            const step = 100;
-            const offset = (Date.now() / 50) % step;
-            for(let x = offset; x < w; x += step) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
-            for(let y = offset; y < h; y += step) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+            const step = 80;
+            const offset = (Date.now() / 60) % step;
+            for (let x = offset; x < w; x += step) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+            for (let y = offset; y < h; y += step) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
             requestAnimationFrame(draw);
         }
         draw();
