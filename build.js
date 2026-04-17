@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
-<title>SONIC ARCHITECT v9.0 — Suno AI Neural Studio</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<style>
+const fs = require('fs');
+
+const CSS = `
 :root{
   --g:#00ff88;--m:#ff00ff;--c:#00ffff;--gold:#f0b429;--red:#ff4444;
   --dark:#04080f;--darker:#02040a;
@@ -223,7 +215,19 @@ textarea{resize:vertical;min-height:80px;line-height:1.7}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:rgba(0,255,136,.25);border-radius:2px}
 ::-webkit-scrollbar-thumb:hover{background:rgba(0,255,136,.5)}
-</style>
+`;
+
+const HTML_TOP = `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<title>SONIC ARCHITECT v9.0 — Suno AI Neural Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>${CSS}</style>
 </head>
 <body>
 <div id="cursor"></div>
@@ -260,7 +264,9 @@ textarea{resize:vertical;min-height:80px;line-height:1.7}
     <div class="menu-item" onclick="switchTab('checklist',this)"><span>✦</span> Checklist</div>
   </aside>
   <main id="main-content">
+`;
 
+const HOME_PANEL = `
     <!-- HOME -->
     <div id="tab-home" class="panel active">
       <h1 class="hero-title">
@@ -298,7 +304,9 @@ textarea{resize:vertical;min-height:80px;line-height:1.7}
         </div>
       </div>
     </div>
+`;
 
+const STUDIO_PANEL = `
     <!-- STUDIO -->
     <div id="tab-studio" class="panel">
       <div class="card">
@@ -498,7 +506,9 @@ textarea{resize:vertical;min-height:80px;line-height:1.7}
         <div id="history-list"><p style="color:var(--dim);font-size:.78rem">Aún no has generado prompts. Usa el Neural Studio arriba.</p></div>
       </div>
     </div>
+`;
 
+const ACADEMY_PANEL = `
     <!-- ACADEMY -->
     <div id="tab-academy" class="panel">
       <div class="badge mb0" style="margin-bottom:1rem">◈ Masterclasses · @pilotpulse9</div>
@@ -509,14 +519,18 @@ textarea{resize:vertical;min-height:80px;line-height:1.7}
       </div>
       <div class="vid-grid" id="video-grid"></div>
     </div>
+`;
 
+const PLAYBOOKS_PANEL = `
     <!-- PLAYBOOKS -->
     <div id="tab-playbooks" class="panel">
       <div class="badge" style="margin-bottom:1.5rem">⚡ Playbooks — Configuraciones Probadas</div>
       <p style="color:var(--dim);font-size:.8rem;line-height:1.8;margin-bottom:1.8rem">Playbooks pre-configurados con géneros, BPM, mood e inyectores optimizados. Haz clic en "Aplicar" para cargar la configuración en el Neural Studio.</p>
       <div class="pb-grid" id="playbooks-grid"></div>
     </div>
+`;
 
+const MAX_PANEL = `
     <!-- MAX INJECTORS -->
     <div id="tab-max" class="panel">
       <div class="card" style="border-color:rgba(255,0,255,.18)">
@@ -527,56 +541,44 @@ textarea{resize:vertical;min-height:80px;line-height:1.7}
         <div class="inj-2col">
           <div class="inj-card">
             <h4>🎚 Fidelidad Máxima</h4>
-            <div class="output-box mb0" style="font-size:.74rem">is mode max
-quality max max
-realins max max
-real instrument max max</div>
-            <button class="btn-copy" onclick="copyAndSpend('is mode max\nquality max max\nrealins max max\nreal instrument max max',80)">Copiar</button>
+            <div class="output-box mb0" style="font-size:.74rem">is mode max\nquality max max\nrealins max max\nreal instrument max max</div>
+            <button class="btn-copy" onclick="copyAndSpend('is mode max\\nquality max max\\nrealins max max\\nreal instrument max max',80)">Copiar</button>
           </div>
           <div class="inj-card">
             <h4>🎤 Vocal Max Mode</h4>
-            <div class="output-box mb0" style="font-size:.74rem">///
-*****
-///
-start on through "[primera frase]"</div>
-            <button class="btn-copy" onclick="copyAndSpend('///\n*****\n///\nstart on through \"[primera frase]\"',60)">Copiar</button>
+            <div class="output-box mb0" style="font-size:.74rem">///\n*****\n///\nstart on through "[primera frase]"</div>
+            <button class="btn-copy" onclick="copyAndSpend('///\\n*****\\n///\\nstart on through \\"[primera frase]\\"',60)">Copiar</button>
           </div>
         </div>
         <div class="inj-2col">
           <div class="inj-card">
             <h4>👥 Duet Mode</h4>
-            <div class="output-box mb0" style="font-size:.74rem">duet start on through
-male start on "[frase hombre]"
-female start on "[frase mujer]"</div>
-            <button class="btn-copy" onclick="copyAndSpend('duet start on through\nmale start on \"[frase hombre]\"\nfemale start on \"[frase mujer]\"',70)">Copiar</button>
+            <div class="output-box mb0" style="font-size:.74rem">duet start on through\nmale start on "[frase hombre]"\nfemale start on "[frase mujer]"</div>
+            <button class="btn-copy" onclick="copyAndSpend('duet start on through\\nmale start on \\"[frase hombre]\\"\\nfemale start on \\"[frase mujer]\\"',70)">Copiar</button>
           </div>
           <div class="inj-card">
             <h4>🔊 Bajos Profundos</h4>
-            <div class="output-box mb0" style="font-size:.74rem">bass depth max
-sub-bass presence
-low-end power</div>
+            <div class="output-box mb0" style="font-size:.74rem">bass depth max\nsub-bass presence\nlow-end power</div>
             <button class="btn-copy" onclick="copyAndSpend('bass depth max | sub-bass presence | low-end power',40)">Copiar</button>
           </div>
         </div>
         <div class="inj-2col">
           <div class="inj-card">
             <h4>✨ Reverb Studio</h4>
-            <div class="output-box mb0" style="font-size:.74rem">reverb space max
-studio ambience
-depth control</div>
+            <div class="output-box mb0" style="font-size:.74rem">reverb space max\nstudio ambience\ndepth control</div>
             <button class="btn-copy" onclick="copyAndSpend('reverb space max | studio ambience | depth control',40)">Copiar</button>
           </div>
           <div class="inj-card">
             <h4>🌊 Estéreo Ancho</h4>
-            <div class="output-box mb0" style="font-size:.74rem">wide stereo field
-spatial audio
-immersive mix</div>
+            <div class="output-box mb0" style="font-size:.74rem">wide stereo field\nspatial audio\nimmersive mix</div>
             <button class="btn-copy" onclick="copyAndSpend('wide stereo field | spatial audio | immersive mix',40)">Copiar</button>
           </div>
         </div>
       </div>
     </div>
+`;
 
+const CHECKLIST_PANEL = `
     <!-- CHECKLIST -->
     <div id="tab-checklist" class="panel">
       <div class="badge" style="margin-bottom:1.5rem">✦ Checklist Profesional Suno</div>
@@ -587,10 +589,9 @@ immersive mix</div>
       <div id="checklist-container"></div>
       <button class="btn-sec" onclick="resetChecklist()" style="margin-top:1rem">↺ Reiniciar Checklist</button>
     </div>
+`;
 
-  </main>
-</div>
-
+const ASSIST_HTML = `
   <!-- FLOATING ASSISTANT -->
   <div class="assist-overlay" id="assist-overlay" style="pointer-events:none">
     <div class="assist-panel" id="assist-panel">
@@ -607,9 +608,9 @@ immersive mix</div>
       </div>
     </div>
   </div>
+`;
 
-<script>
-
+const JS = `
 gsap.registerPlugin(ScrollTrigger);
 
 // ── CURSOR ──
@@ -858,23 +859,23 @@ function generatePrompt(){
   const styleField=styleParts.join(', ');
 
   // ── BUILD LYRICS FIELD ──
-  let lyricsField='[Intro]\n';
-  lyricsField+=struct.split(', ').map(s=>'['+s+']').join('\n')+'\n\n';
-  if(lang!=='Instrumental')lyricsField+='Language: '+lang+'\n';
-  if(theme)lyricsField+='Theme: '+theme+'\n';
-  if(vision)lyricsField+='Vision: '+vision+'\n';
+  let lyricsField='[Intro]\\n';
+  lyricsField+=struct.split(', ').map(s=>'['+s+']').join('\\n')+'\\n\\n';
+  if(lang!=='Instrumental')lyricsField+='Language: '+lang+'\\n';
+  if(theme)lyricsField+='Theme: '+theme+'\\n';
+  if(vision)lyricsField+='Vision: '+vision+'\\n';
   if(activeInj.includes('fidelity')){
-    lyricsField+='\nis mode max\nquality max max\nrealins max max\nreal instrument max max\n';
+    lyricsField+='\\nis mode max\\nquality max max\\nrealins max max\\nreal instrument max max\\n';
   }
 
   // ── OUTPUT PREVIEW ──
-  const outPreview=genre+(subgenre?' / '+subgenre:'')+(mood?', '+mood:'')+', '+bpm+'bpm\n'+vocal+(instr?'\nInstr: '+instr:'');
+  const outPreview=genre+(subgenre?' / '+subgenre:'')+(mood?', '+mood:'')+', '+bpm+'bpm\\n'+vocal+(instr?'\\nInstr: '+instr:'');
 
   document.getElementById('input-display').textContent=vision;
   document.getElementById('output-preview').textContent=outPreview;
   document.getElementById('style-field-text').textContent=styleField;
   document.getElementById('lyrics-field-text').textContent=lyricsField;
-  document.getElementById('full-field-text').textContent='--- STYLE FIELD ---\n'+styleField+'\n\n--- LYRICS FIELD ---\n'+lyricsField;
+  document.getElementById('full-field-text').textContent='--- STYLE FIELD ---\\n'+styleField+'\\n\\n--- LYRICS FIELD ---\\n'+lyricsField;
 
   const sec=document.getElementById('output-section');
   if(sec.style.display==='none'){
@@ -1126,7 +1127,19 @@ document.addEventListener('DOMContentLoaded',()=>{
   animateIn();
   setTimeout(countUp,600);
 });
+`;
 
+const HTML = HTML_TOP + HOME_PANEL + STUDIO_PANEL + ACADEMY_PANEL + PLAYBOOKS_PANEL + MAX_PANEL + CHECKLIST_PANEL + `
+  </main>
+</div>
+` + ASSIST_HTML + `
+<script>
+${JS}
 </script>
 </body>
-</html>
+</html>`;
+
+const path = require('path');
+const outPath = path.join(__dirname, 'index.html');
+fs.writeFileSync(outPath, HTML, 'utf8');
+console.log('Built ' + outPath + ' — ' + HTML.length + ' bytes');
